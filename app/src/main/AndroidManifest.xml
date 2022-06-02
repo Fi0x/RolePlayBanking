@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RolePlayBanking">
         <activity
-            android:name=".MainActivity"
+            android:name=".AccountSelectionActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.RolePlayBanking.NoActionBar">
             <intent-filter>
