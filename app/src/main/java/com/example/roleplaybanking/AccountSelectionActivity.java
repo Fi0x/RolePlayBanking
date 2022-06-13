@@ -12,8 +12,13 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 public class AccountSelectionActivity extends AppCompatActivity {
+
+    private ArrayList<String> accounts = new ArrayList<>(); //TODO: Update to use an accounts class that stores more information
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,13 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_selection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //TODO: Load all accounts from backend to 'accounts'-ArrayList
+        LinearLayout dock = findViewById(R.id.account_dock);
+        for(String account : accounts)
+        {
+            //TODO: Create entry in list with account name that can be clicked to open specific account
+        }
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

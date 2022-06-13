@@ -18,9 +18,18 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.RolePlayBanking.PopupOverlay" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <include layout="@layout/content_main" /> <!-- TODO: Replace with list of all current accounts -->
+            <LinearLayout
+                android:id="@+id/account_dock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
