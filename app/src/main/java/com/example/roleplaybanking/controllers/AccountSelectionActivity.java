@@ -1,9 +1,10 @@
-package com.example.roleplaybanking;
+package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
 
+import com.example.roleplaybanking.R;
+import com.example.roleplaybanking.structures.Account;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 
 public class AccountSelectionActivity extends AppCompatActivity {
 
-    private ArrayList<String> accounts = new ArrayList<>(); //TODO: Update to use an accounts class that stores more information
+    private ArrayList<Account> accounts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
         LinearLayout dock = findViewById(R.id.account_dock);
-        for(String account : accounts)
+        for(Account account : accounts)
         {
             //TODO: Create entry in list with account name that can be clicked to open specific account
         }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.roleplaybanking.AccountSelectionFragment"
+        android:name="com.example.roleplaybanking.controllers.AccountSelectionFragment"
         android:label="@string/lbl_fragment_account_selection"
         tools:layout="@layout/fragment_account_selection">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.roleplaybanking.SecondFragment"
+        android:name="com.example.roleplaybanking.controllers.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
