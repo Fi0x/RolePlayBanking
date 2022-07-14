@@ -3,16 +3,20 @@ package com.example.roleplaybanking.controllers;
 import android.os.Bundle;
 
 import com.example.roleplaybanking.R;
+import com.example.roleplaybanking.controllers.helper.AccountsAdapter;
 import com.example.roleplaybanking.structures.Account;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Adapter;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 public class AccountSelectionActivity extends AppCompatActivity {
 
     private ArrayList<Account> accounts = new ArrayList<>();
+    private AccountsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +34,11 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
-        LinearLayout dock = findViewById(R.id.account_dock);
-        for(Account account : accounts)
-        {
-            //TODO: Create entry in list with account name that can be clicked to open specific account
-        }
+
+        final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvAccounts);
+        adapter = new AccountsAdapter(accounts);
+        rvContacts.setAdapter(adapter);
+        rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
