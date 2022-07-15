@@ -7,6 +7,11 @@ public class Menge {
     private Number Nutzer;
 
     public Menge(){}
+    public Menge(String hey){
+        Historys = 1;
+        Kontos = 1;
+        Nutzer = 1;
+    }
 
     public Number getHistorys() {
         return Historys;

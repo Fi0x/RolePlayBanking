@@ -20,44 +20,60 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Map;
+
 public class DatabaseCon {
 
     private NutzerClass user;
-    private Menge g;
+    private String PW;
+    private boolean Sucess = false;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ColUser = db.collection("Nutzer");
     private CollectionReference ColKont = db.collection("Konten");
     private CollectionReference ColHist = db.collection("History");
-    private DocumentReference DocMenge = db.collection("Menge").document("Menge");
+    private DocumentReference DocMenge = db.collection("Menge").document("Menge");;
 
-    public boolean ReqisterUser(String Name, String User, String UserPW){
+
+    public void ReqisterUser(String Name, String User, String UserPW){
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                g = documentSnapshot.toObject(Menge.class);
+                Map<String, Object> m = documentSnapshot.getData();
+                Register(Name, (long)m.get("nutzer"), User, UserPW);
             }
         });
-        NutzerClass newuser = new NutzerClass(Name, g.getNutzer(), User, UserPW);
-        db.collection("Nutzer").document(User).set(newuser);
-        DocMenge.update("Nutzer", (int)g.getNutzer()+1);
-        user = newuser;
-        return true;
     }
 
-    public Boolean ConnectUser(String User, String UserPW){
+    public void Register(String Name, Number Id, String User, String UserPW){
+        NutzerClass newuser = new NutzerClass(Name, Id, User, UserPW);
+        db.collection("Nutzer").document(User).set(newuser);
+        DocMenge.update("nutzer", (long)Id+1);
+        user = newuser;
+        Sucess = true;
+    }
+
+    public void Connect(String Name, Number Id, String User, String UserPW){
+        user = new NutzerClass(Name, Id, User, UserPW);
+        if(!(user.getNutzerPW().equals(PW))){
+            user = null;
+            Sucess = false;
+        } else {
+            Sucess = true;
+        }
+
+    }
+
+    public void ConnectUser(String User, String UserPW){
         DocumentReference DocUser = ColUser.document(User);
+        PW = UserPW;
         DocUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(NutzerClass.class);
+                Map<String, Object> m = documentSnapshot.getData();
+                Log.d("ConnectUser", documentSnapshot.getData().toString());
+                Connect(m.get("Name").toString(), (long)m.get("NutzerID"), m.get("NutzerName").toString(), m.get("NutzerPW").toString());
             }
         });
-        if(user.getNutzerPW().equals(UserPW)){
-            return true;
-        }
-
-        user = null;
-        return false;
     }
 
     public String getName(){
@@ -74,6 +90,10 @@ public class DatabaseCon {
 
     public Number getNutzerID(){
         return user.getNutzerID();
+    }
+
+    public boolean getSucess(){
+        return Sucess;
     }
 
 }
