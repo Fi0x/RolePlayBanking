@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.controllers.AccountOverviewActivity;
+import com.example.roleplaybanking.controllers.AccountSelectionActivity;
 import com.example.roleplaybanking.structures.Account;
 
 import java.util.List;
@@ -59,6 +60,16 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.ViewHo
 
             itemView.setOnClickListener(v -> {
                 final Intent intent = new Intent(itemView.getContext(), AccountOverviewActivity.class);
+
+                for (Account a : AccountSelectionActivity.accounts)
+                {
+                    if(a.name == nameTextView.getText() && a.gameName == gameTextView.getText())
+                    {
+                        Account.currentAccount = a;
+                        break;
+                    }
+                }
+
                 itemView.getContext().startActivity(intent);
             });
         }

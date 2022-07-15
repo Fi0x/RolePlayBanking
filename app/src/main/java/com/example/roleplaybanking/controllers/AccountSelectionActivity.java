@@ -1,6 +1,5 @@
 package com.example.roleplaybanking.controllers;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.roleplaybanking.R;
@@ -21,8 +20,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 public class AccountSelectionActivity extends AppCompatActivity {
-
-    private ArrayList<Account> accounts = new ArrayList<>();
+    public static ArrayList<Account> accounts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
         acc2.name = "TEST";//Placeholder for testing
         accounts.add(acc2);//Placeholder for testing
 
-        final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvAccounts);
+        final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(new AccountsAdapter(accounts));
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 

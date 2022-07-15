@@ -1,30 +1,34 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.roleplaybanking.R;
+import com.example.roleplaybanking.structures.Account;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class AccountOverviewActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_overview);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(Account.currentAccount.name + " (" + Account.currentAccount.gameName + ")");
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Open popup to send money
+                //TODO: Open popup to send money (onece or repeating)
             }
         });
     }

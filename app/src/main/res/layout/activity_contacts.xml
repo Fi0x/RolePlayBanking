@@ -20,7 +20,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" /> <!-- TODO: Replace with list of all contacts -->
+    <include layout="@layout/content_account" /> <!-- TODO: Replace with list of all contacts -->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

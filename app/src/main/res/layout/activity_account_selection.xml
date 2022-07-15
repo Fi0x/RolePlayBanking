@@ -20,7 +20,7 @@
             app:popupTheme="@style/Theme.RolePlayBanking.PopupOverlay" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAccounts"
+            android:id="@+id/rvTransactionHistory"
             android:layout_width="match_parent"
             android:layout_height="677dp"/>
 

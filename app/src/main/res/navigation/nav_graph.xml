@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.roleplaybanking.controllers.AccountSelectionFragment"
+        android:name="com.example.roleplaybanking.controllers.AccountOverviewFragment"
         android:label="@string/lbl_fragment_account_selection"
-        tools:layout="@layout/fragment_account_selection">
+        tools:layout="@layout/fragment_account_overview">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
