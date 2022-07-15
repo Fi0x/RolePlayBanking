@@ -20,15 +20,9 @@
             app:popupTheme="@style/Theme.RolePlayBanking.PopupOverlay" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAccounts"
             android:layout_width="match_parent"
-            android:layout_height="677dp">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/rvAccounts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="677dp"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

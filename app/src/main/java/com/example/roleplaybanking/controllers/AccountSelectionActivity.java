@@ -16,15 +16,12 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
 public class AccountSelectionActivity extends AppCompatActivity {
 
     private ArrayList<Account> accounts = new ArrayList<>();
-    private AccountsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +31,13 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
+        accounts.add(new Account());//Placeholder for testing
+        Account acc2 = new Account();//Placeholder for testing
+        acc2.name = "TEST";//Placeholder for testing
+        accounts.add(acc2);//Placeholder for testing
 
         final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvAccounts);
-        adapter = new AccountsAdapter(accounts);
-        rvContacts.setAdapter(adapter);
+        rvContacts.setAdapter(new AccountsAdapter(accounts));
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -51,7 +51,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -63,10 +62,8 @@ public class AccountSelectionActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
             return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
