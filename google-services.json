@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "519340103774",
+    "project_id": "roleplaybanking",
+    "storage_bucket": "roleplaybanking.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519340103774:android:c884435bd900cd238a3ccf",
+        "android_client_info": {
+          "package_name": "com.example.roleplaybanking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519340103774-e7m0q5qt3qigfgsreip8sf94dtqpiaca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmNA53Xhk0_pLWKRpn_-72jonOeG89zyQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519340103774-e7m0q5qt3qigfgsreip8sf94dtqpiaca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
