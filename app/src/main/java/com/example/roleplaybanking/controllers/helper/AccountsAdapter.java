@@ -1,6 +1,7 @@
 package com.example.roleplaybanking.controllers.helper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roleplaybanking.R;
+import com.example.roleplaybanking.controllers.AccountOverviewActivity;
 import com.example.roleplaybanking.structures.Account;
 
 import java.util.List;
@@ -56,7 +58,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.ViewHo
             gameTextView = (TextView) itemView.findViewById(R.id.account_game);
 
             itemView.setOnClickListener(v -> {
-                //TODO: Open specific account
+                final Intent intent = new Intent(itemView.getContext(), AccountOverviewActivity.class);
+                itemView.getContext().startActivity(intent);
             });
         }
     }
