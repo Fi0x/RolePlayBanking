@@ -20,5 +20,5 @@
     <string name="account_name">Account-Name</string>
     <string name="create_account">Create Account</string>
     <string name="default_balance">Default Balance</string>
-    <string name="create_a_new_game">Create a new Game</string>
+    <string name="create_a_new_game">Create as a new Game</string>
 </resources>

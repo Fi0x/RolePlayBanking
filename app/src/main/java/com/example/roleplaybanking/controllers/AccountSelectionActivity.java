@@ -30,6 +30,15 @@ public class AccountSelectionActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> openNewAccountCreation());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        accounts.clear();
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
         accounts.add(new Account());//Placeholder for testing
         Account acc2 = new Account();//Placeholder for testing
@@ -39,9 +48,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
         final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(new AccountsAdapter(accounts));
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> openNewAccountCreation());
     }
 
     @Override

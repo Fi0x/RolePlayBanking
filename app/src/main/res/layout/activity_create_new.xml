@@ -31,6 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txInGameName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/game_name"
@@ -44,6 +45,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtGameName">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txInAccountName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/account_name"
@@ -67,6 +69,7 @@
                 tools:layout_editor_absoluteX="101dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txInDefaultBalance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/default_balance"
