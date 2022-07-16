@@ -2,6 +2,7 @@ package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
 
+import com.example.roleplaybanking.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.controllers.helper.AccountsAdapter;
 import com.example.roleplaybanking.structures.Account;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 public class AccountSelectionActivity extends AppCompatActivity {
     public static ArrayList<Account> accounts = new ArrayList<>();
+    public DatabaseCon DBc = new DatabaseCon();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,17 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
-        accounts.add(new Account());//Placeholder for testing
+        DBc.ConnectUser("Nutzer0", "AdminAdmin");
+        //TODO: Zeitproblem lösen
+        //When Zeitproblem gelöst accounts hinzufügen funktion
+        /*DBc.ConnectKontos();
+        Account addAcc = DBc.getAccount(0);
+        int i;
+        for(i = 1; addAcc != null; i++){
+            accounts.add(addAcc);
+            addAcc = DBc.getAccount(i);
+        }*/
+        //TODO: code reste aufraumen
         Account acc2 = new Account();//Placeholder for testing
         acc2.name = "TEST";//Placeholder for testing
         accounts.add(acc2);//Placeholder for testing

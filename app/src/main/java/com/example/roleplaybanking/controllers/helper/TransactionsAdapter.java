@@ -45,7 +45,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         TextView txtAmount = viewHolder.amount;
         txtAmount.setText(String.format("%s", transaction.amount));
         TextView txtTime = viewHolder.timestamp;
-        String date = DateFormat.format("dd.MM.yyyy HH:mm", new Date(transaction.timestamp)).toString();
+        String date = DateFormat.format("dd.MM.yyyy HH:mm", transaction.timestamp.toDate()).toString();
         txtTime.setText(date);
     }
 

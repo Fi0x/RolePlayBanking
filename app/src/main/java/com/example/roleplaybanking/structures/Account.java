@@ -8,4 +8,14 @@ public class Account
     public String name = "Unknown Account";
     public double balance = 0;
     public String currencySign = "€";
+    public Number AccountID = -1;
+
+    public Account(){}
+    public Account(String gameName, String name, double balance, Number AccountID){
+        this.gameName = gameName;
+        this.name = name;
+        this.balance = balance;
+        this.AccountID = AccountID;
+    }
 }
+
