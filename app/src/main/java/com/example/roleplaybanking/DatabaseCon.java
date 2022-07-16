@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseCon {
@@ -46,16 +47,66 @@ public class DatabaseCon {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> m = documentSnapshot.getData();
-                Register(Name, (long)m.get("nutzer"), User, UserPW);
+                RegisterU(Name, (long)m.get("nutzer"), User, UserPW);
             }
         });
     }
 
-    public void Register(String Name, Number Id, String User, String UserPW){
+    public void RegisterU(String Name, Number Id, String User, String UserPW){
         NutzerClass newuser = new NutzerClass(Name, Id, User, UserPW);
         db.collection("Nutzer").document(User).set(newuser);
         DocMenge.update("nutzer", (long)Id+1);
         user = newuser;
+        Sucess = true;
+    }
+
+    public void RegisterKonto(String Game, Number Geld, String Kontonamen){
+        DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> m = documentSnapshot.getData();
+                RegisterK(Game, Geld, (long)m.get("kontos"), Kontonamen, user.getNutzerID());
+            }
+        });
+    }
+
+    public void RegisterK(String Game, Number Geld, Number KontoID, String Kontonamen, Number NutzerID){
+        Account newAcc = new Account(Game, Kontonamen, (double)Geld, KontoID);
+        Map<String, Object> m = new HashMap<>();
+        m.put("Game", Game);
+        m.put("Geld", Geld);
+        m.put("KontoID", KontoID);
+        m.put("Kontoname", Kontonamen);
+        m.put("Nutzer", NutzerID);
+        db.collection("Konten").document(KontoID.toString()).set(m);
+        DocMenge.update("kontos", (long)KontoID+1);
+        Konten.add(newAcc);
+        Sucess = true;
+    }
+
+    public void RegisterTran(Number Betrag, String Empfaenger,  String Notiz, String Nutzerkonto, Timestamp time){
+        DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> m = documentSnapshot.getData();
+                RegisterT(Betrag, Empfaenger, (long)m.get("historys"), Notiz, user.getNutzerID(), Nutzerkonto, time);
+            }
+        });
+    }
+
+    public void RegisterT(Number Betrag, String Empfaenger, Number HistoryID,  String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time){
+        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (double)Betrag, time, Notiz);
+        Map<String, Object> m = new HashMap<>();
+        m.put("Betrag", Betrag);
+        m.put("Empfaenger", Empfaenger);
+        m.put("HistoryID", HistoryID);
+        m.put("Notiz", Notiz);
+        m.put("Nutzer", Nutzer);
+        m.put("Nutzerkonto", Nutzerkonto);
+        m.put("SendeZeit", time);
+        db.collection("History").document(HistoryID.toString()).set(m);
+        DocMenge.update("historys", (long)HistoryID+1);
+        Trans.add(newTran);
         Sucess = true;
     }
 
