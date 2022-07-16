@@ -15,6 +15,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -197,6 +198,30 @@ public class DatabaseCon {
     public void addTrans(String sender, String recipient, double amount, Timestamp Time, String notiz){
         Transaction newTran = new Transaction(sender, recipient, amount, Time, notiz);
         Trans.add(newTran);
+    }
+
+    public void TransferMoney(double Betrag, String Kontonamen, Number senderKontoID){
+        ColKont.whereEqualTo("Kontoname", Kontonamen)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TransferMoney", document.getData().toString());
+                                Map<String, Object> m = document.getData();
+                                TransferM(Betrag, (Number)m.get("KontoID"), senderKontoID);
+                            }
+                        } else {
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void TransferM(double Betrag, Number KontoIDempfaenger, Number senderKontoID){
+        ColKont.document(KontoIDempfaenger.toString()).update("Geld", FieldValue.increment(Betrag));
+        ColKont.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1*Betrag));
     }
 
     public String getName(){
