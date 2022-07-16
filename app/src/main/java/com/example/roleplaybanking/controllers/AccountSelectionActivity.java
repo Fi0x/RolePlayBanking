@@ -33,6 +33,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
         accounts.add(new Account());//Placeholder for testing
         Account acc2 = new Account();//Placeholder for testing
         acc2.name = "TEST";//Placeholder for testing
+        acc2.currencySign = "Nuyen";
         accounts.add(acc2);//Placeholder for testing
 
         final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
