@@ -35,7 +35,7 @@ public class AccountOverviewFragment extends Fragment {
         DBc = AccountSelectionActivity.DBc;
         transactions.add(new Transaction());//Placeholder
         Transaction trans = new Transaction();//Placeholder
-        trans.sender = DBc.getTrans(0).sender;//Placeholder
+        trans.sender = "Tester1";//Placeholder
         trans.recipient = "Beta";//Placeholder
         trans.amount = 300;//Placeholder
         transactions.add(trans);//Placeholder

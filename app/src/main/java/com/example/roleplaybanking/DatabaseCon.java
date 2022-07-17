@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -42,7 +43,6 @@ public class DatabaseCon {
     private CollectionReference ColKont = db.collection("Konten");
     private CollectionReference ColHist = db.collection("History");
     private DocumentReference DocMenge = db.collection("Menge").document("Menge");
-
 
     public void ReqisterUser(String Name, String User, String UserPW) {
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -139,6 +139,8 @@ public class DatabaseCon {
 
     public void ConnectKontos(AccountSelectionActivity activity) {
         //Log.d("ConnectKonto", "hey execute");
+        if(user == null)
+            return;
         ColKont.whereEqualTo("nutzer", user.getNutzerID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -261,6 +263,7 @@ public class DatabaseCon {
         return Konten.get(i);
     }
 
+    @Nullable
     public Transaction getTrans(Integer i) {
         if (i > Trans.size() - 1) {
             return null;
