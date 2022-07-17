@@ -55,6 +55,8 @@ public class AccountOverviewFragment extends Fragment {
         rvTransactions.setAdapter(new TransactionsAdapter(transactions));
         rvTransactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        AccountOverviewActivity.fab.setVisibility(View.VISIBLE);
+
         return view;
     }
 
