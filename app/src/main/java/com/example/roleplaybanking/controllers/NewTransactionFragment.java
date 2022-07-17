@@ -31,38 +31,38 @@ public class NewTransactionFragment extends Fragment {
         //TODO: Add possible recipients
 
         Button sendButton = view.findViewById(R.id.btnSend);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Get recipient name from spinner and validate
-
-                TextInputEditText txtAmount = view.findViewById(R.id.txtTransferAmount);
-                String amountString = txtAmount.getText().toString();
-
-                if(amountString == null || amountString.equals(""))
-                {
-                    //TODO: Send user error that amount can't be null
-                    return;
-                }
-
-                double amount = Double.parseDouble(amountString);
-                if(amount <= 0 || amount > Account.currentAccount.balance)
-                {
-                    //TODO: Notify user that amount is invalid
-                    return;
-                }
-
-
-                NavController nc = Navigation.findNavController(view);
-                nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
-                AccountOverviewActivity.fab.setVisibility(View.VISIBLE);
-            }
-        });
+        sendButton.setOnClickListener(view1 -> sendTransaction(view));
 
         return view;
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void sendTransaction(View view)
+    {
+        //TODO: Get recipient name from spinner and validate
+
+        TextInputEditText txtAmount = view.findViewById(R.id.txtTransferAmount);
+        String amountString = txtAmount.getText().toString();
+
+        if(amountString == null || amountString.equals(""))
+        {
+            //TODO: Send user error that amount can't be null
+            return;
+        }
+
+        double amount = Double.parseDouble(amountString);
+        if(amount <= 0 || amount > Account.currentAccount.balance)
+        {
+            //TODO: Notify user that amount is invalid
+            return;
+        }
+
+
+        NavController nc = Navigation.findNavController(view);
+        nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
+        AccountOverviewActivity.fab.setVisibility(View.VISIBLE);
     }
 }
