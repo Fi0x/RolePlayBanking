@@ -38,6 +38,7 @@ public class DatabaseCon {
     private boolean Sucess = false;
     private ArrayList<Account> Konten = new ArrayList<>();
     private ArrayList<Transaction> Trans = new ArrayList<>();
+    private ArrayList<String> Empfaengernamen = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ColUser = db.collection("Nutzer");
     private CollectionReference ColKont = db.collection("Konten");
@@ -206,6 +207,29 @@ public class DatabaseCon {
     public void addTrans(String sender, String recipient, Long amount, Timestamp Time, String notiz) {
         Transaction newTran = new Transaction(sender, recipient, amount, Time, notiz);
         Trans.add(newTran);
+    }
+
+    public void ConnectEmpfaenger(){
+        ColKont.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("ConnectEmpfaenger", document.getData().toString());
+                                Map<String, Object> m = document.getData();
+                                addEmpfaenger(m.get("Kontoname").toString());
+                            }
+
+                        } else {
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void addEmpfaenger(String Empfaenger){
+        Empfaengernamen.add(Empfaenger);
     }
 
     public void TransferMoney(double Betrag, String Kontonamen, Number senderKontoID) {
