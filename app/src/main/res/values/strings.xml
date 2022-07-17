@@ -14,4 +14,9 @@
     <string name="sender">Sender</string>
     <string name="amount">Amount</string>
     <string name="unknown_time">Unknown Time</string>
+    <string name="recipient">Recipient</string>
+    <string name="send">Send</string>
+    <string name="amount">Amount</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="balance_after_transaction">Balance after Transaction</string>
 </resources>
