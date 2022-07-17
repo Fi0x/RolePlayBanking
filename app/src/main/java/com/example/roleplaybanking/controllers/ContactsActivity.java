@@ -26,7 +26,7 @@ public class ContactsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DatabaseCon a = new DatabaseCon();
-        a.ConnectUser("Nutzer0", "AdminAdmin");
+        a.ConnectUser(null, "Nutzer0", "AdminAdmin");
         while(a.getSucess());
 
         FloatingActionButton fab = findViewById(R.id.fab);

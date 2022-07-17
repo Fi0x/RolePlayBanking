@@ -4,6 +4,7 @@ package com.example.roleplaybanking;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.roleplaybanking.controllers.AccountSelectionActivity;
 import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,36 +44,36 @@ public class DatabaseCon {
     private DocumentReference DocMenge = db.collection("Menge").document("Menge");
 
 
-    public void ReqisterUser(String Name, String User, String UserPW){
+    public void ReqisterUser(String Name, String User, String UserPW) {
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> m = documentSnapshot.getData();
-                RegisterU(Name, (long)m.get("nutzer"), User, UserPW);
+                RegisterU(Name, (long) m.get("nutzer"), User, UserPW);
             }
         });
     }
 
-    public void RegisterU(String Name, Number Id, String User, String UserPW){
+    public void RegisterU(String Name, Number Id, String User, String UserPW) {
         NutzerClass newuser = new NutzerClass(Name, Id, User, UserPW);
         db.collection("Nutzer").document(User).set(newuser);
-        DocMenge.update("nutzer", (long)Id+1);
+        DocMenge.update("nutzer", (long) Id + 1);
         user = newuser;
         Sucess = true;
     }
 
-    public void RegisterKonto(String Game, Number Geld, String Kontonamen){
+    public void RegisterKonto(String Game, Number Geld, String Kontonamen) {
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> m = documentSnapshot.getData();
-                RegisterK(Game, Geld, (long)m.get("kontos"), Kontonamen, user.getNutzerID());
+                RegisterK(Game, Geld, (long) m.get("kontos"), Kontonamen, user.getNutzerID());
             }
         });
     }
 
-    public void RegisterK(String Game, Number Geld, Number KontoID, String Kontonamen, Number NutzerID){
-        Account newAcc = new Account(Game, Kontonamen, (double)Geld, KontoID);
+    public void RegisterK(String Game, Number Geld, Number KontoID, String Kontonamen, Number NutzerID) {
+        Account newAcc = new Account(Game, Kontonamen, (double) Geld, KontoID);
         Map<String, Object> m = new HashMap<>();
         m.put("Game", Game);
         m.put("Geld", Geld);
@@ -80,23 +81,23 @@ public class DatabaseCon {
         m.put("Kontoname", Kontonamen);
         m.put("Nutzer", NutzerID);
         db.collection("Konten").document(KontoID.toString()).set(m);
-        DocMenge.update("kontos", (long)KontoID+1);
+        DocMenge.update("kontos", (long) KontoID + 1);
         Konten.add(newAcc);
         Sucess = true;
     }
 
-    public void RegisterTran(Number Betrag, String Empfaenger,  String Notiz, String Nutzerkonto, Timestamp time){
+    public void RegisterTran(Number Betrag, String Empfaenger, String Notiz, String Nutzerkonto, Timestamp time) {
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> m = documentSnapshot.getData();
-                RegisterT(Betrag, Empfaenger, (long)m.get("historys"), Notiz, user.getNutzerID(), Nutzerkonto, time);
+                RegisterT(Betrag, Empfaenger, (long) m.get("historys"), Notiz, user.getNutzerID(), Nutzerkonto, time);
             }
         });
     }
 
-    public void RegisterT(Number Betrag, String Empfaenger, Number HistoryID,  String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time){
-        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (double)Betrag, time, Notiz);
+    public void RegisterT(Number Betrag, String Empfaenger, Number HistoryID, String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time) {
+        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (double) Betrag, time, Notiz);
         Map<String, Object> m = new HashMap<>();
         m.put("Betrag", Betrag);
         m.put("Empfaenger", Empfaenger);
@@ -106,24 +107,24 @@ public class DatabaseCon {
         m.put("Nutzerkonto", Nutzerkonto);
         m.put("SendeZeit", time);
         db.collection("History").document(HistoryID.toString()).set(m);
-        DocMenge.update("historys", (long)HistoryID+1);
+        DocMenge.update("historys", (long) HistoryID + 1);
         Trans.add(newTran);
         Sucess = true;
     }
 
-    public void Connect(String Name, Number Id, String User, String UserPW){
+    public void Connect(AccountSelectionActivity activity, String Name, Number Id, String User, String UserPW) {
         user = new NutzerClass(Name, Id, User, UserPW);
-        if(!(user.getNutzerPW().equals(PW))){
+        if (!(user.getNutzerPW().equals(PW))) {
             user = null;
             Sucess = false;
         } else {
             Sucess = true;
         }
-        this.ConnectKontos();
+        this.ConnectKontos(activity);
         this.ConnectTrans();
     }
 
-    public void ConnectUser(String User, String UserPW){
+    public void ConnectUser(AccountSelectionActivity activity, String User, String UserPW) {
         DocumentReference DocUser = ColUser.document(User);
         PW = UserPW;
         DocUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -131,24 +132,28 @@ public class DatabaseCon {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> m = documentSnapshot.getData();
                 //Log.d("ConnectUser", documentSnapshot.getData().toString());
-                Connect(m.get("Name").toString(), (long)m.get("NutzerID"), m.get("NutzerName").toString(), m.get("NutzerPW").toString());
+                Connect(activity, m.get("Name").toString(), (long) m.get("NutzerID"), m.get("NutzerName").toString(), m.get("NutzerPW").toString());
             }
         });
     }
 
-    public void ConnectKontos(){
+    public void ConnectKontos(AccountSelectionActivity activity) {
         //Log.d("ConnectKonto", "hey execute");
         ColKont.whereEqualTo("nutzer", user.getNutzerID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    final AccountSelectionActivity act = activity;
+
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("ConnectKontos", document.getData().toString());
                                 Map<String, Object> m = document.getData();
-                                addKonto(m.get("Game").toString(), m.get("Kontoname").toString(), (double)m.get("Geld"), (Number)m.get("KontoID"));
+                                addKonto(m.get("Game").toString(), m.get("Kontoname").toString(), (double) m.get("Geld"), (Number) m.get("KontoID"));
                             }
+                            if (act != null)
+                                act.notifyDBConnectionEstablished();
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -156,12 +161,12 @@ public class DatabaseCon {
                 });
     }
 
-    public void addKonto(String GName, String KontoName, double balance, Number AccountID){
+    public void addKonto(String GName, String KontoName, double balance, Number AccountID) {
         Account newAcc = new Account(GName, KontoName, balance, AccountID);
         Konten.add(newAcc);
     }
 
-    public void ConnectTrans(){
+    public void ConnectTrans() {
         ColHist.whereEqualTo("Nutzer", user.getNutzerID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -171,7 +176,7 @@ public class DatabaseCon {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("ConnectTrans", document.getData().toString());
                                 Map<String, Object> m = document.getData();
-                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long)m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long) m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -187,7 +192,7 @@ public class DatabaseCon {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("ConnectTrans", document.getData().toString());
                                 Map<String, Object> m = document.getData();
-                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long)m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long) m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -196,12 +201,12 @@ public class DatabaseCon {
                 });
     }
 
-    public void addTrans(String sender, String recipient, Long amount, Timestamp Time, String notiz){
+    public void addTrans(String sender, String recipient, Long amount, Timestamp Time, String notiz) {
         Transaction newTran = new Transaction(sender, recipient, amount, Time, notiz);
         Trans.add(newTran);
     }
 
-    public void TransferMoney(double Betrag, String Kontonamen, Number senderKontoID){
+    public void TransferMoney(double Betrag, String Kontonamen, Number senderKontoID) {
         ColKont.whereEqualTo("Kontoname", Kontonamen)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -211,7 +216,7 @@ public class DatabaseCon {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("TransferMoney", document.getData().toString());
                                 Map<String, Object> m = document.getData();
-                                TransferM(Betrag, (Number)m.get("KontoID"), senderKontoID);
+                                TransferM(Betrag, (Number) m.get("KontoID"), senderKontoID);
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -220,44 +225,44 @@ public class DatabaseCon {
                 });
     }
 
-    public void TransferM(double Betrag, Number KontoIDempfaenger, Number senderKontoID){
+    public void TransferM(double Betrag, Number KontoIDempfaenger, Number senderKontoID) {
         ColKont.document(KontoIDempfaenger.toString()).update("Geld", FieldValue.increment(Betrag));
-        ColKont.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1*Betrag));
+        ColKont.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1 * Betrag));
     }
 
-    public String getName(){
+    public String getName() {
         return user.getName();
     }
 
-    public String getNutzerName(){
+    public String getNutzerName() {
         return user.getNutzerName();
     }
 
-    public String getNutzerPw(){
+    public String getNutzerPw() {
         return user.getNutzerPW();
     }
 
-    public Number getNutzerID(){
+    public Number getNutzerID() {
         return user.getNutzerID();
     }
 
-    public boolean getSucess(){
+    public boolean getSucess() {
         return Sucess;
     }
 
-    public void setSucess(boolean b){
+    public void setSucess(boolean b) {
         Sucess = b;
     }
 
-    public Account getAccount(Integer i){
-        if(i > Konten.size()-1){
+    public Account getAccount(Integer i) {
+        if (i > Konten.size() - 1) {
             return null;
         }
         return Konten.get(i);
     }
 
-    public Transaction getTrans(Integer i){
-        if(i > Trans.size()-1){
+    public Transaction getTrans(Integer i) {
+        if (i > Trans.size() - 1) {
             return null;
         }
         return Trans.get(i);
