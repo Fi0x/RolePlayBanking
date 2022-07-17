@@ -19,4 +19,11 @@
     <string name="amount">Amount</string>
     <string name="current_balance">Current Balance</string>
     <string name="balance_after_transaction">Balance after Transaction</string>
+    <string name="new_game">New Game</string>
+    <string name="new_account">New Account</string>
+    <string name="game_name">Game-Name</string>
+    <string name="account_name">Account-Name</string>
+    <string name="create_account">Create Account</string>
+    <string name="default_balance">Default Balance</string>
+    <string name="create_a_new_game">Create as a new Game</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.roleplaybanking.R;
@@ -29,6 +30,15 @@ public class AccountSelectionActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> openNewAccountCreation());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        accounts.clear();
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
         accounts.add(new Account());//Placeholder for testing
         Account acc2 = new Account();//Placeholder for testing
@@ -39,14 +49,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
         final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(new AccountsAdapter(accounts));
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Open popup to create new account
-            }
-        });
     }
 
     @Override
@@ -57,14 +59,17 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_settings)
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openNewAccountCreation()
+    {
+        final Intent intent = new Intent(this, CreateNewActivity.class);
+        startActivity(intent);
     }
 }
