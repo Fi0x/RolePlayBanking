@@ -140,12 +140,12 @@ public class DatabaseCon {
     }
 
     public void ConnectKontos(AccountSelectionActivity activity) {
-        Log.d("ConnectKonto", "hey execute");
+        //Log.d("ConnectKonto", "hey execute");
         if(user == null) {
-            Log.d("ConnectKonto", "hey User = null");
+            //Log.d("ConnectKonto", "hey User = null");
             return;
         }
-        Log.d("ConnectKonto", user.getNutzerID().toString());
+        //Log.d("ConnectKonto", user.getNutzerID().toString());
         ColKont.whereEqualTo("Nutzer", user.getNutzerID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -155,7 +155,7 @@ public class DatabaseCon {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("ConnectKontos", document.getData().toString());
+                                //Log.d("ConnectKontos", document.getData().toString());
                                 Map<String, Object> m = document.getData();
                                 addKonto(m.get("Game").toString(), m.get("Kontoname").toString(), (Long) m.get("Geld"), (Number) m.get("KontoID"));
                             }
@@ -181,7 +181,7 @@ public class DatabaseCon {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("ConnectTrans", document.getData().toString());
+                                //Log.d("ConnectTrans", document.getData().toString());
                                 Map<String, Object> m = document.getData();
                                 addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long) m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
                             }
@@ -220,7 +220,7 @@ public class DatabaseCon {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d("ConnectEmpfaenger", document.getData().toString());
+                                Log.d("ConnectEmpfaenger", document.getData().toString());
                                 Map<String, Object> m = document.getData();
                                 addEmpfaenger(m.get("Kontoname").toString());
                             }
@@ -299,6 +299,9 @@ public class DatabaseCon {
         return Trans.get(i);
     }
 
+    public void OrderTransactions(){
+
+    }
 
     /*public NutzerClass getUser(){
         return user;

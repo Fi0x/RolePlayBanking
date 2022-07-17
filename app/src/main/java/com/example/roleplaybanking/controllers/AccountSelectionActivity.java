@@ -44,7 +44,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
         super.onStart();
 
         accounts.clear();
-        //TODO: Load all accounts from backend to 'accounts'-ArrayList
         if(!(Alreadyconnected)){
             DBc.ConnectUser(this, "Nutzer0", "AdminAdmin");
             Alreadyconnected=true;
