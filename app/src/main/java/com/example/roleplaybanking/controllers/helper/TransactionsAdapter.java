@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roleplaybanking.R;
+import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
 
 import java.time.format.DateTimeFormatter;
@@ -43,7 +44,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         TextView txtRecipient = viewHolder.recipient;
         txtRecipient.setText(String.format("To %s", transaction.recipient));
         TextView txtAmount = viewHolder.amount;
-        txtAmount.setText(String.format("%s", transaction.amount));
+        txtAmount.setText(String.format("%s %s", transaction.amount, Account.currentAccount.currencySign));
         TextView txtTime = viewHolder.timestamp;
         String date = DateFormat.format("dd.MM.yyyy HH:mm", new Date(transaction.timestamp)).toString();
         txtTime.setText(date);
