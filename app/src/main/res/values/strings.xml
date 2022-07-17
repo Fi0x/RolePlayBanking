@@ -10,9 +10,7 @@
     <string name="balance">Balance</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="empty_balance">No money found</string>
-    <string name="recipient">Recipient</string>
     <string name="sender">Sender</string>
-    <string name="amount">Amount</string>
     <string name="unknown_time">Unknown Time</string>
     <string name="recipient">Recipient</string>
     <string name="send">Send</string>

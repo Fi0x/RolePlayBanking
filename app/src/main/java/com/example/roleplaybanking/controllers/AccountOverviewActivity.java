@@ -18,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class AccountOverviewActivity extends AppCompatActivity {
     private NavController navCon;
+    public static FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +31,12 @@ public class AccountOverviewActivity extends AppCompatActivity {
 
         navCon = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navCon.navigate(R.id.action_FirstFragment_to_SecondFragment);
+                navCon.navigate(R.id.action_FirstFragment_to_SecondFragment2);
+                fab.setVisibility(View.INVISIBLE);
             }
         });
     }
