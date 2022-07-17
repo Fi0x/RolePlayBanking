@@ -40,6 +40,7 @@ public class DatabaseCon {
     private ArrayList<Account> Konten = new ArrayList<>();
     private ArrayList<Transaction> Trans = new ArrayList<>();
     private ArrayList<String> Empfaengernamen = new ArrayList<>();
+    private ArrayList<String> Gamenames = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ColUser = db.collection("Nutzer");
     private CollectionReference ColKont = db.collection("Konten");
@@ -75,7 +76,7 @@ public class DatabaseCon {
     }
 
     public void RegisterK(String Game, Number Geld, Number KontoID, String Kontonamen, Number NutzerID) {
-        Account newAcc = new Account(Game, Kontonamen, (double) Geld, KontoID);
+        Account newAcc = new Account(Game, Kontonamen, (long) Geld, KontoID);
         Map<String, Object> m = new HashMap<>();
         m.put("Game", Game);
         m.put("Geld", Geld);
@@ -116,6 +117,26 @@ public class DatabaseCon {
         Sucess = true;
     }
 
+    public void RegisterGame(String name, Number Admin){
+        DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> m = documentSnapshot.getData();
+                RegisterG(name, Admin, (long) m.get("games"));
+            }
+        });
+    }
+
+    public void RegisterG(String name, Number Admin, Number GameID){
+        Map<String, Object> m = new HashMap<>();
+        m.put("Admin", Admin);
+        m.put("GameID", GameID);
+        m.put("Name", name);
+        db.collection("Game").document(GameID.toString()).set(m);
+        DocMenge.update("games", (long) GameID + 1);
+        Gamenames.add(name);
+    }
+
     public void Connect(AccountSelectionActivity activity, String Name, Number Id, String User, String UserPW) {
         user = new NutzerClass(Name, Id, User, UserPW);
         if (!(user.getNutzerPW().equals(PW))) {
@@ -127,6 +148,7 @@ public class DatabaseCon {
         this.ConnectKontos(activity);
         this.ConnectTrans();
         this.ConnectEmpfaenger();
+        this.ConnectGames();
     }
 
     public void ConnectUser(AccountSelectionActivity activity, String User, String UserPW) {
@@ -240,6 +262,29 @@ public class DatabaseCon {
         Empfaengernamen.add(Empfaenger);
     }
 
+    public void ConnectGames(){
+        db.collection("Game").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //Log.d("ConnectEmpfaenger", document.getData().toString());
+                                Map<String, Object> m = document.getData();
+                                addGame(m.get("Name").toString());
+                            }
+
+                        } else {
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void addGame(String name){
+        Gamenames.add(name);
+    }
+
     public void TransferMoney(double Betrag, String Kontonamen, Number senderKontoID) {
         ColKont.whereEqualTo("Kontoname", Kontonamen)
                 .get()
@@ -313,9 +358,16 @@ public class DatabaseCon {
             }
         }
     }
+    public String getGame(Integer i) {
+        if (i > Gamenames.size() - 1) {
+            return null;
+        }
+        return Gamenames.get(i);
+    }
 
-    /*public NutzerClass getUser(){
+
+    public NutzerClass getUser(){
         return user;
-    }*/
+    }
 
 }

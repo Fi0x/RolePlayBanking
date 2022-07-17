@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.roleplaybanking.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Game;
@@ -18,6 +19,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class CreateNewActivity extends AppCompatActivity {
+
+    public DatabaseCon DBc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +56,13 @@ public class CreateNewActivity extends AppCompatActivity {
         TextInputEditText txtAccountName = findViewById(R.id.txInAccountName);
         TextInputEditText txtDefaultBalance = findViewById(R.id.txInDefaultBalance);
         CheckBox cbIsNew = findViewById(R.id.cbIsNewGame);
+        DBc = AccountSelectionActivity.DBc;
 
         String gameName = txtGameName.getText().toString();
         String accountName = txtAccountName.getText().toString();
         String balanceString = txtDefaultBalance.getText().toString();
+        //TODO: balanceString eingabe in Long umwandeln ohne Null Object zu generieren
+        Long balance = (long)100000;
 
         if(accountName == null || accountName.equals("") || gameName == null || gameName.equals(""))
         {
@@ -75,36 +81,46 @@ public class CreateNewActivity extends AppCompatActivity {
             return;
         }
 
-        Account ac = new Account();
-        ac.name = accountName;
-        ac.gameName = gameName;
+
+        int i;
+        boolean Gameexist = false;
+        for (i = 0; DBc.getGame(i) != null; i++) {
+            if(DBc.getGame(i).contentEquals(gameName)){
+                Gameexist = true;
+            }
+        }
 
         if(cbIsNew.isChecked())
         {
-            //TODO: Check if game-name already exists in Firebase and if not create new game with the account as admin
+            if(Gameexist){
+                txtGameName.setText(gameName + " (Gibt es bereits!)");
+                txtGameName.setBackgroundColor(Color.RED);
+                return;
+            }
             if(balanceString == null || balanceString.equals(""))
             {
-                //TODO: Send user error that balance can't be null
+                txtDefaultBalance.setText("Darf nicht leer sein!");
+                txtDefaultBalance.setBackgroundColor(Color.RED);
                 return;
             }
 
-            //TODO: If game name already exists in DB, send error to user
+            AccountSelectionActivity.DBc.RegisterGame(gameName, DBc.getUser().getNutzerID());
 
-            Game g = new Game();
-            g.name = gameName;
-            g.adminName = accountName;
-            g.defaultBalance = Double.parseDouble(balanceString);
         }
         else
         {
-            //TODO: Check if game-name exists in DB. If not, send a user error and abort
-            return;
+            if(!(Gameexist)){
+                txtGameName.setText(gameName + " (Gibt es nicht!)");
+                txtGameName.setBackgroundColor(Color.RED);
+                return;
+            }
         }
 
-        //TODO: Get correct default-balance from DB and set it in local account
-
-        //TODO: Upload new Account to DB
-
+        if(cbIsNew.isChecked()){
+            AccountSelectionActivity.DBc.RegisterKonto(gameName, balance, accountName);
+        } else {
+            AccountSelectionActivity.DBc.RegisterKonto(gameName, (long) 0, accountName);
+        }
         finish();
     }
 }
