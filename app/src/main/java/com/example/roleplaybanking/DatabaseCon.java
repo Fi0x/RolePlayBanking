@@ -34,8 +34,8 @@ public class DatabaseCon {
     private NutzerClass user;
     private String PW;
     private boolean Sucess = false;
-    private ArrayList<Account> Konten;
-    private ArrayList<Transaction> Trans;
+    private ArrayList<Account> Konten = new ArrayList<>();
+    private ArrayList<Transaction> Trans = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ColUser = db.collection("Nutzer");
     private CollectionReference ColKont = db.collection("Konten");
@@ -119,7 +119,8 @@ public class DatabaseCon {
         } else {
             Sucess = true;
         }
-
+        this.ConnectKontos();
+        this.ConnectTrans();
     }
 
     public void ConnectUser(String User, String UserPW){
@@ -170,7 +171,7 @@ public class DatabaseCon {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("ConnectTrans", document.getData().toString());
                                 Map<String, Object> m = document.getData();
-                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (double)m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long)m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -186,7 +187,7 @@ public class DatabaseCon {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("ConnectTrans", document.getData().toString());
                                 Map<String, Object> m = document.getData();
-                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (double)m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                                addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long)m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -195,7 +196,7 @@ public class DatabaseCon {
                 });
     }
 
-    public void addTrans(String sender, String recipient, double amount, Timestamp Time, String notiz){
+    public void addTrans(String sender, String recipient, Long amount, Timestamp Time, String notiz){
         Transaction newTran = new Transaction(sender, recipient, amount, Time, notiz);
         Trans.add(newTran);
     }

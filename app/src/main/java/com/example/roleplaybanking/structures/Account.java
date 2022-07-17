@@ -1,5 +1,7 @@
 package com.example.roleplaybanking.structures;
 
+import java.util.ArrayList;
+
 public class Account
 {
     public static Account currentAccount = new Account();
@@ -9,6 +11,7 @@ public class Account
     public double balance = 0;
     public String currencySign = "€";
     public Number AccountID = -1;
+    public ArrayList<Transaction> AccountHistory = new ArrayList<>();
 
     public Account(){}
     public Account(String gameName, String name, double balance, Number AccountID){
@@ -16,6 +19,10 @@ public class Account
         this.name = name;
         this.balance = balance;
         this.AccountID = AccountID;
+    }
+
+    public void addTransaction(Transaction addTran){
+        AccountHistory.add(addTran);
     }
 }
 
