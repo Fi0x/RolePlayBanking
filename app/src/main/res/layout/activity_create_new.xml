@@ -23,7 +23,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/background">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtGameName"
@@ -35,7 +36,9 @@
                     android:id="@+id/txInGameName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/surface"
                     android:hint="@string/game_name"
+                    android:textColor="@color/onSurface"
                     android:textSize="24sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,7 +52,9 @@
                     android:id="@+id/txInAccountName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/surface"
                     android:hint="@string/account_name"
+                    android:textColor="@color/onSurface"
                     android:textSize="24sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -58,7 +63,9 @@
                 android:id="@+id/create_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/secondary"
                 android:text="@string/create_account"
+                android:textColor="@color/onSecondary"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -73,7 +80,9 @@
                     android:id="@+id/txInDefaultBalance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/surface"
                     android:hint="@string/default_balance"
+                    android:textColor="@color/onSurface"
                     android:inputType="number"
                     android:textSize="24sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -82,7 +91,9 @@
                 android:id="@+id/cbIsNewGame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:buttonTint="@color/onBackground"
                 android:text="@string/create_a_new_game"
+                android:textColor="@color/onSurface"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtDefaultBalance" />

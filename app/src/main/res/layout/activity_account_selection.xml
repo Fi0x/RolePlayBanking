@@ -25,13 +25,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/your_accounts"
-            android:textColor="@color/onBackground"
+            android:textColor="@color/onSecondary"
             android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTransactionHistory"
             android:layout_width="match_parent"
-            android:layout_height="677dp"/>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -41,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/secondary_variant"
+        android:tint="@color/secondary"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
