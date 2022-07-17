@@ -9,12 +9,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class AccountOverviewActivity extends AppCompatActivity {
+    private NavController navCon;
+    public static FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,11 +29,14 @@ public class AccountOverviewActivity extends AppCompatActivity {
         toolbar.setTitle(Account.currentAccount.name + " (" + Account.currentAccount.gameName + ")");
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        navCon = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Open popup to send money (onece or repeating)
+                navCon.navigate(R.id.action_FirstFragment_to_SecondFragment2);
+                fab.setVisibility(View.INVISIBLE);
             }
         });
     }

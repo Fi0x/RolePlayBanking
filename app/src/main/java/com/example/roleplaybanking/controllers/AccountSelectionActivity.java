@@ -1,5 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.roleplaybanking.DatabaseCon;
@@ -33,6 +34,15 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         adapter = new AccountsAdapter(accounts);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> openNewAccountCreation());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        accounts.clear();
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
         DBc.ConnectUser(this, "Nutzer0", "AdminAdmin");
         //TODO: Zeitproblem lösen
@@ -42,19 +52,12 @@ public class AccountSelectionActivity extends AppCompatActivity {
         //TODO: code reste aufraumen
         Account acc2 = new Account();//Placeholder for testing
         acc2.name = "TEST";//Placeholder for testing
+        acc2.currencySign = "Nuyen";
         accounts.add(acc2);//Placeholder for testing
 
         final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Open popup to create new account
-            }
-        });
     }
 
     @Override
@@ -65,9 +68,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_settings)
@@ -87,5 +87,11 @@ public class AccountSelectionActivity extends AppCompatActivity {
     public void addAccountToList(Account account) {
         accounts.add(account);
         adapter.notifyItemInserted(accounts.size() - 1);
+    }
+
+    private void openNewAccountCreation()
+    {
+        final Intent intent = new Intent(this, CreateNewActivity.class);
+        startActivity(intent);
     }
 }
