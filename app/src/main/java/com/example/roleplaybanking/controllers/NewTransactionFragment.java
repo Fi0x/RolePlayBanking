@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,9 +17,9 @@ import androidx.navigation.Navigation;
 
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class NewTransactionFragment extends Fragment {
-    //TODO: Fill and finish class
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_transaction, container, false);
@@ -25,11 +27,31 @@ public class NewTransactionFragment extends Fragment {
         TextView txtBalance = view.findViewById(R.id.txtCurrentBalance);
         txtBalance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
 
+        Spinner sp = view.findViewById(R.id.spinRecipientList);
+        //TODO: Add possible recipients
+
         Button sendButton = view.findViewById(R.id.btnSend);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Check if recipient is selected and amount to send is not greater than account balance
+                //TODO: Get recipient name from spinner and validate
+
+                TextInputEditText txtAmount = view.findViewById(R.id.txtTransferAmount);
+                String amountString = txtAmount.getText().toString();
+
+                if(amountString == null || amountString.equals(""))
+                {
+                    //TODO: Send user error that amount can't be null
+                    return;
+                }
+
+                double amount = Double.parseDouble(amountString);
+                if(amount <= 0 || amount > Account.currentAccount.balance)
+                {
+                    //TODO: Notify user that amount is invalid
+                    return;
+                }
+
 
                 NavController nc = Navigation.findNavController(view);
                 nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
