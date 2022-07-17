@@ -123,6 +123,7 @@ public class DatabaseCon {
         }
         this.ConnectKontos(activity);
         this.ConnectTrans();
+        this.ConnectEmpfaenger();
     }
 
     public void ConnectUser(AccountSelectionActivity activity, String User, String UserPW) {
@@ -139,10 +140,13 @@ public class DatabaseCon {
     }
 
     public void ConnectKontos(AccountSelectionActivity activity) {
-        //Log.d("ConnectKonto", "hey execute");
-        if(user == null)
+        Log.d("ConnectKonto", "hey execute");
+        if(user == null) {
+            Log.d("ConnectKonto", "hey User = null");
             return;
-        ColKont.whereEqualTo("nutzer", user.getNutzerID())
+        }
+        Log.d("ConnectKonto", user.getNutzerID().toString());
+        ColKont.whereEqualTo("Nutzer", user.getNutzerID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     final AccountSelectionActivity act = activity;
@@ -153,7 +157,7 @@ public class DatabaseCon {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("ConnectKontos", document.getData().toString());
                                 Map<String, Object> m = document.getData();
-                                addKonto(m.get("Game").toString(), m.get("Kontoname").toString(), (double) m.get("Geld"), (Number) m.get("KontoID"));
+                                addKonto(m.get("Game").toString(), m.get("Kontoname").toString(), (Long) m.get("Geld"), (Number) m.get("KontoID"));
                             }
                             if (act != null)
                                 act.notifyDBConnectionEstablished();
@@ -164,7 +168,7 @@ public class DatabaseCon {
                 });
     }
 
-    public void addKonto(String GName, String KontoName, double balance, Number AccountID) {
+    public void addKonto(String GName, String KontoName, Long balance, Number AccountID) {
         Account newAcc = new Account(GName, KontoName, balance, AccountID);
         Konten.add(newAcc);
     }
@@ -216,7 +220,7 @@ public class DatabaseCon {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("ConnectEmpfaenger", document.getData().toString());
+                                //Log.d("ConnectEmpfaenger", document.getData().toString());
                                 Map<String, Object> m = document.getData();
                                 addEmpfaenger(m.get("Kontoname").toString());
                             }

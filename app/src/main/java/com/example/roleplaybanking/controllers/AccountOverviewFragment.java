@@ -1,6 +1,7 @@
 package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,8 @@ public class AccountOverviewFragment extends Fragment {
         transactions.add(trans);//Placeholder
         //TODO: Load real transactions
         //DBc.ConnectUser("Nutzer0", "AdminAdmin");
-        //TODO: Zeitproblem lösen
-        //When Zeitproblem gelöst trans hinzufügen funktion
         //DBc.ConnectTrans();
+        //Log.d("onCreateView", DBc.getAccount(0).name);
         Transaction addTrans = DBc.getTrans(0);
         int i;
         for(i = 1; addTrans != null; i++){

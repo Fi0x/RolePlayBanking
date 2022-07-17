@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 public class AccountSelectionActivity extends AppCompatActivity {
     public static ArrayList<Account> accounts = new ArrayList<>();
     public static DatabaseCon DBc = new DatabaseCon();
+    public static boolean Alreadyconnected = false;
     private AccountsAdapter adapter;
 
     @Override
@@ -32,7 +34,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_selection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         adapter = new AccountsAdapter(accounts);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> openNewAccountCreation());
@@ -44,17 +45,17 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
         accounts.clear();
         //TODO: Load all accounts from backend to 'accounts'-ArrayList
-        DBc.ConnectUser(this, "Nutzer0", "AdminAdmin");
-        //TODO: Zeitproblem lösen
+        if(!(Alreadyconnected)){
+            DBc.ConnectUser(this, "Nutzer0", "AdminAdmin");
+            Alreadyconnected=true;
+        }
         //When Zeitproblem gelöst accounts hinzufügen funktion
-        DBc.ConnectKontos(this);
-
-        //TODO: code reste aufraumen
-        Account acc2 = new Account();//Placeholder for testing
-        acc2.name = "TEST";//Placeholder for testing
-        acc2.currencySign = "Nuyen";
-        accounts.add(acc2);//Placeholder for testing
-
+        //DBc.ConnectKontos(this);
+        int i;
+        for (i = 0; DBc.getAccount(i) != null; i++) {
+            //Log.d("onStart", DBc.getAccount(i).name);
+            accounts.add(DBc.getAccount(i));
+        }
         final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
