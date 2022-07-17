@@ -8,7 +8,6 @@
     <string name="previous">Previous</string>
 
     <string name="balance">Balance</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="empty_balance">No money found</string>
     <string name="sender">Sender</string>
     <string name="unknown_time">Unknown Time</string>
@@ -16,7 +15,6 @@
     <string name="send">Send</string>
     <string name="amount">Amount</string>
     <string name="current_balance">Current Balance</string>
-    <string name="balance_after_transaction">Balance after Transaction</string>
     <string name="new_game">New Game</string>
     <string name="new_account">New Account</string>
     <string name="game_name">Game-Name</string>
@@ -24,4 +22,6 @@
     <string name="create_account">Create Account</string>
     <string name="default_balance">Default Balance</string>
     <string name="create_a_new_game">Create as a new Game</string>
+    <string name="your_accounts">Your Accounts</string>
+    <string name="create_a_new_transaction">Create a new Transaction</string>
 </resources>

@@ -66,16 +66,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
 //        return true;
 //    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings)
-            return true;
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void notifyDBConnectionEstablished() {
         Account addAcc = DBc.getAccount(0);
         for (int i = 1; addAcc != null; i++) {
