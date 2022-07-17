@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
+import com.google.firestore.v1.StructuredQuery;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,20 +85,21 @@ public class DatabaseCon {
         db.collection("Konten").document(KontoID.toString()).set(m);
         DocMenge.update("kontos", (long) KontoID + 1);
         Konten.add(newAcc);
+        Empfaengernamen.add(Kontonamen);
         Sucess = true;
     }
 
-    public void RegisterTran(Number Betrag, String Empfaenger, String Notiz, String Nutzerkonto, Timestamp time) {
+    public void RegisterTran(Number Betrag, String Empfaenger, String Notiz, String Nutzerkonto, Timestamp time, Account fromAcc) {
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> m = documentSnapshot.getData();
-                RegisterT(Betrag, Empfaenger, (long) m.get("historys"), Notiz, user.getNutzerID(), Nutzerkonto, time);
+                RegisterT(Betrag, Empfaenger, (long) m.get("historys"), Notiz, user.getNutzerID(), Nutzerkonto, time, fromAcc);
             }
         });
     }
 
-    public void RegisterT(Number Betrag, String Empfaenger, Number HistoryID, String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time) {
+    public void RegisterT(Number Betrag, String Empfaenger, Number HistoryID, String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time, Account fromAcc) {
         Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (double) Betrag, time, Notiz);
         Map<String, Object> m = new HashMap<>();
         m.put("Betrag", Betrag);
@@ -110,6 +112,7 @@ public class DatabaseCon {
         db.collection("History").document(HistoryID.toString()).set(m);
         DocMenge.update("historys", (long) HistoryID + 1);
         Trans.add(newTran);
+        fromAcc.AccountHistory.add(newTran);
         Sucess = true;
     }
 
@@ -201,6 +204,7 @@ public class DatabaseCon {
                                 Map<String, Object> m = document.getData();
                                 addTrans(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), (Long) m.get("Betrag"), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
                             }
+                            OrderTransactions();
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -220,7 +224,7 @@ public class DatabaseCon {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("ConnectEmpfaenger", document.getData().toString());
+                                //Log.d("ConnectEmpfaenger", document.getData().toString());
                                 Map<String, Object> m = document.getData();
                                 addEmpfaenger(m.get("Kontoname").toString());
                             }
@@ -300,7 +304,14 @@ public class DatabaseCon {
     }
 
     public void OrderTransactions(){
-
+        int i, j;
+        for (i = 0; this.getAccount(i) != null; i++) {
+            for (j = 0; this.getTrans(j) != null; j++) {
+               if(Trans.get(j).sender.contentEquals(Konten.get(i).name) || Trans.get(j).recipient.contentEquals(Konten.get(i).name)){
+                   Konten.get(i).AccountHistory.add(Trans.get(j));
+               }
+            }
+        }
     }
 
     /*public NutzerClass getUser(){

@@ -34,14 +34,13 @@ public class AccountOverviewFragment extends Fragment {
         TextView balance = view.findViewById(R.id.txt_balance);
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
-        //TODO: Load right Transactions
         //DBc.ConnectUser("Nutzer0", "AdminAdmin");
         //DBc.ConnectTrans();
-        //Log.d("ConnectKonto", DBc.getTrans(0).sender);
         int i;
-        for (i = 0; DBc.getTrans(i) != null; i++) {
-            //Log.d("onStart", DBc.getAccount(i).name);
-            transactions.add(DBc.getTrans(i));
+        //Log.d("onCreatView", "Account.currentAccount.getHistory(0).sender");
+        for (i = 0; Account.currentAccount.getHistory(i) != null; i++) {
+            //Log.d("onCreatView", Account.currentAccount.getHistory(0).sender);
+            transactions.add(Account.currentAccount.getHistory(i));
         }
 
         final RecyclerView rvTransactions = (RecyclerView) view.findViewById(R.id.rvTransactionHistory);

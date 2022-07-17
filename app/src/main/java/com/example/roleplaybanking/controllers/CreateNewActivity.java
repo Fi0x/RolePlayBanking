@@ -1,5 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,7 +60,18 @@ public class CreateNewActivity extends AppCompatActivity {
 
         if(accountName == null || accountName.equals("") || gameName == null || gameName.equals(""))
         {
-            //TODO: Send user error that game name and account name can't be null
+            if((accountName == null || accountName.equals("")) && (gameName == null || gameName.equals(""))){
+                txtAccountName.setText("Darf nicht leer sein!");
+                txtAccountName.setBackgroundColor(Color.RED);
+                txtGameName.setText("Darf nicht leer sein!");
+                txtGameName.setBackgroundColor(Color.RED);
+            } else if(gameName == null || gameName.equals("")) {
+                txtGameName.setText("Darf nicht leer sein!");
+                txtGameName.setBackgroundColor(Color.RED);
+            } else {
+                txtAccountName.setText("Darf nicht leer sein!");
+                txtAccountName.setBackgroundColor(Color.RED);
+            }
             return;
         }
 
