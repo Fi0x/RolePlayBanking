@@ -25,4 +25,5 @@
     <string name="your_accounts">Your Accounts</string>
     <string name="create_a_new_transaction">Create a new Transaction</string>
     <string name="new_transaction">New Transaction</string>
+    <string name="select_a_recipient">Type in a Name</string>
 </resources>
