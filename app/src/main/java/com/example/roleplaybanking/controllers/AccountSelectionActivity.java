@@ -53,7 +53,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
         int i;
         for (i = 0; DBc.getAccount(i) != null; i++) {
             //Log.d("onStart", DBc.getAccount(i).name);
-            accounts.add(DBc.getAccount(i));
+            this.addAccountToList(DBc.getAccount(i));
         }
         final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(adapter);
@@ -67,10 +67,11 @@ public class AccountSelectionActivity extends AppCompatActivity {
 //    }
 
     public void notifyDBConnectionEstablished() {
-        Account addAcc = DBc.getAccount(0);
-        for (int i = 1; addAcc != null; i++) {
-            addAccountToList(addAcc);
-            addAcc = DBc.getAccount(i);
+        accounts.clear();
+        int i;
+        for (i = 0; DBc.getAccount(i) != null; i++) {
+            //Log.d("onStart", DBc.getAccount(i).name);
+            this.addAccountToList(DBc.getAccount(i));
         }
     }
 
