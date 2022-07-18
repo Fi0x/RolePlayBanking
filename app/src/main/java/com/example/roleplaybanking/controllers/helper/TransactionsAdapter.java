@@ -2,7 +2,6 @@ package com.example.roleplaybanking.controllers.helper;
 
 import android.content.Context;
 import android.text.format.DateFormat;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.ViewHolder> {

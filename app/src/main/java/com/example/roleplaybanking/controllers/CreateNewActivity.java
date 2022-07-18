@@ -11,7 +11,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.roleplaybanking.DatabaseCon;
+import com.example.roleplaybanking.database.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,7 +39,7 @@ public class CreateNewActivity extends AppCompatActivity {
         txtDefaultBalanceVis = findViewById(R.id.txtDefaultBalance);
 
         Button btnCreate = findViewById(R.id.create_button);
-        btnCreate.setOnClickListener(view -> verifyAndCreate(view));
+        btnCreate.setOnClickListener(this::verifyAndCreate);
     }
 
     @Override
@@ -65,8 +65,7 @@ public class CreateNewActivity extends AppCompatActivity {
         double balance;
         try {
             balance = Double.parseDouble(balanceString);
-        } catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             balance = 0;
         }
 
@@ -120,8 +119,7 @@ public class CreateNewActivity extends AppCompatActivity {
             txtDefaultBalanceVis.setVisibility(checked ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public void closeActivityWhenDone()
-    {
+    public void closeActivityWhenDone() {
         finish();
     }
 }

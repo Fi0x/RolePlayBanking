@@ -1,7 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +8,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.roleplaybanking.DatabaseCon;
+import com.example.roleplaybanking.database.DatabaseCon;
 import com.example.roleplaybanking.R;
-import com.example.roleplaybanking.controllers.helper.AccountsAdapter;
 import com.example.roleplaybanking.controllers.helper.TransactionsAdapter;
 import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
@@ -24,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountOverviewFragment extends Fragment {
-    private List<Transaction> transactions = new ArrayList<>();
+    private final List<Transaction> transactions = new ArrayList<>();
     public DatabaseCon DBc;
 
     @Override
@@ -34,12 +31,8 @@ public class AccountOverviewFragment extends Fragment {
         TextView balance = view.findViewById(R.id.txt_balance);
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
-        //DBc.ConnectUser("Nutzer0", "AdminAdmin");
-        //DBc.ConnectTrans();
-        int i;
-        //Log.d("onCreatView", "Account.currentAccount.getHistory(0).sender");
-        for (i = 0; Account.currentAccount.getHistory(i) != null; i++) {
-            //Log.d("onCreatView", Account.currentAccount.getHistory(0).sender);
+
+        for (int i = 0; Account.currentAccount.getHistory(i) != null; i++) {
             transactions.add(Account.currentAccount.getHistory(i));
         }
 

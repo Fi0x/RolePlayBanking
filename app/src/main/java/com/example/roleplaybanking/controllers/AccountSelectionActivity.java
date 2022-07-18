@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.roleplaybanking.DatabaseCon;
+import com.example.roleplaybanking.database.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.controllers.helper.AccountsAdapter;
 import com.example.roleplaybanking.structures.Account;
