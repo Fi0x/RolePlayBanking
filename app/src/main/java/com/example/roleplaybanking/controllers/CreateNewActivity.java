@@ -17,6 +17,7 @@ import com.example.roleplaybanking.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Game;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -34,8 +35,7 @@ public class CreateNewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
-        {
+        if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -43,21 +43,19 @@ public class CreateNewActivity extends AppCompatActivity {
         txtDefaultBalanceVis = findViewById(R.id.txtDefaultBalance);
 
         Button btnCreate = findViewById(R.id.create_button);
-        btnCreate.setOnClickListener(view -> verifyAndCreate());
+        btnCreate.setOnClickListener(view -> verifyAndCreate(view));
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home)
-        {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void verifyAndCreate()
-    {
+    private void verifyAndCreate(View view) {
         TextInputEditText txtGameName = findViewById(R.id.txInGameName);
         TextInputEditText txtAccountName = findViewById(R.id.txInAccountName);
         TextInputEditText txtDefaultBalance = findViewById(R.id.txInDefaultBalance);
@@ -68,23 +66,14 @@ public class CreateNewActivity extends AppCompatActivity {
         String accountName = txtAccountName.getText().toString();
         String balanceString = txtDefaultBalance.getText().toString();
         //TODO: balanceString eingabe in Long umwandeln ohne Null Object zu generieren
-        Long balance = (long)100000;
+        Long balance = (long) 100000;
 
-        //TODO snackbar verwenden
-        if(accountName == null || accountName.equals("") || gameName == null || gameName.equals(""))
-        {
-            if((accountName == null || accountName.equals("")) && (gameName == null || gameName.equals(""))){
-                txtAccountName.setText("Darf nicht leer sein!");
-                txtAccountName.setBackgroundColor(Color.RED);
-                txtGameName.setText("Darf nicht leer sein!");
-                txtGameName.setBackgroundColor(Color.RED);
-            } else if(gameName == null || gameName.equals("")) {
-                txtGameName.setText("Darf nicht leer sein!");
-                txtGameName.setBackgroundColor(Color.RED);
-            } else {
-                txtAccountName.setText("Darf nicht leer sein!");
-                txtAccountName.setBackgroundColor(Color.RED);
-            }
+        if (gameName == null || gameName.equals("")) {
+            Snackbar.make(view, getString(R.string.error_account_game_null), Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if (accountName == null || accountName.equals("")) {
+            Snackbar.make(view, getString(R.string.error_account_name_null), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -92,40 +81,31 @@ public class CreateNewActivity extends AppCompatActivity {
         int i;
         boolean Gameexist = false;
         for (i = 0; DBc.getGame(i) != null; i++) {
-            if(DBc.getGame(i).contentEquals(gameName)){
+            if (DBc.getGame(i).contentEquals(gameName)) {
                 Gameexist = true;
             }
         }
 
-        if(cbIsNew.isChecked())
-        {
-            //TODO snackbar verwenden
-            if(Gameexist){
-                txtGameName.setText(gameName + " (Gibt es bereits!)");
-                txtGameName.setBackgroundColor(Color.RED);
+        if (cbIsNew.isChecked()) {
+            if (Gameexist) {
+                Snackbar.make(view, getString(R.string.error_account_game_exists), Snackbar.LENGTH_LONG).show();
                 return;
             }
-            if(balanceString == null || balanceString.equals(""))
-            {
-                txtDefaultBalance.setText("Darf nicht leer sein!");
-                txtDefaultBalance.setBackgroundColor(Color.RED);
+            if (balanceString == null || balanceString.equals("")) {
+                Snackbar.make(view, getString(R.string.error_account_balance_null), Snackbar.LENGTH_LONG).show();
                 return;
             }
 
             AccountSelectionActivity.DBc.RegisterGame(gameName, DBc.getUser().getNutzerID());
 
-        }
-        else
-        {
-            //TODO snackbar verwenden
-            if(!(Gameexist)){
-                txtGameName.setText(gameName + " (Gibt es nicht!)");
-                txtGameName.setBackgroundColor(Color.RED);
+        } else {
+            if (!(Gameexist)) {
+                Snackbar.make(view, gameName + getString(R.string.error_account_game_not_found), Snackbar.LENGTH_LONG).show();
                 return;
             }
         }
 
-        if(cbIsNew.isChecked()){
+        if (cbIsNew.isChecked()) {
             AccountSelectionActivity.DBc.RegisterKonto(gameName, balance, accountName);
         } else {
             AccountSelectionActivity.DBc.RegisterKonto(gameName, (long) 0, accountName);
@@ -133,10 +113,9 @@ public class CreateNewActivity extends AppCompatActivity {
         finish();
     }
 
-    public void checkBoxPressed(View view)
-    {
+    public void checkBoxPressed(View view) {
         boolean checked = ((CheckBox) view).isChecked();
-        if(view.getId() == R.id.cbIsNewGame)
+        if (view.getId() == R.id.cbIsNewGame)
             txtDefaultBalanceVis.setVisibility(checked ? View.VISIBLE : View.INVISIBLE);
     }
 }

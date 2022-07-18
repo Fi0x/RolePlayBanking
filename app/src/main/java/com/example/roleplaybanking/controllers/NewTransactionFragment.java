@@ -1,5 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.navigation.Navigation;
 
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class NewTransactionFragment extends Fragment {
@@ -53,14 +55,14 @@ public class NewTransactionFragment extends Fragment {
 
         if(amountString == null || amountString.equals(""))
         {
-            //TODO: Send user error that amount can't be null
+            Snackbar.make(view, getString(R.string.error_transaction_amount_null), Snackbar.LENGTH_LONG).show();
             return;
         }
 
         double amount = Double.parseDouble(amountString);
         if(amount <= 0 || amount > Account.currentAccount.balance)
         {
-            //TODO: Notify user that amount is invalid
+            Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
         }
 
