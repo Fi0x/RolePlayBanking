@@ -1,6 +1,7 @@
 package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,22 +34,13 @@ public class AccountOverviewFragment extends Fragment {
         TextView balance = view.findViewById(R.id.txt_balance);
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
-        transactions.add(new Transaction());//Placeholder
-        Transaction trans = new Transaction();//Placeholder
-        trans.sender = "Tester1";//Placeholder
-        trans.recipient = "Beta";//Placeholder
-        trans.amount = 300;//Placeholder
-        transactions.add(trans);//Placeholder
-        //TODO: Load real transactions
         //DBc.ConnectUser("Nutzer0", "AdminAdmin");
-        //TODO: Zeitproblem lösen
-        //When Zeitproblem gelöst trans hinzufügen funktion
         //DBc.ConnectTrans();
-        Transaction addTrans = DBc.getTrans(0);
         int i;
-        for(i = 1; addTrans != null; i++){
-            transactions.add(addTrans);
-            addTrans = DBc.getTrans(i);
+        //Log.d("onCreatView", "Account.currentAccount.getHistory(0).sender");
+        for (i = 0; Account.currentAccount.getHistory(i) != null; i++) {
+            //Log.d("onCreatView", Account.currentAccount.getHistory(0).sender);
+            transactions.add(Account.currentAccount.getHistory(i));
         }
 
         final RecyclerView rvTransactions = (RecyclerView) view.findViewById(R.id.rvTransactionHistory);
