@@ -315,6 +315,13 @@ public class DatabaseCon {
         return user;
     }
 
+    public String getEmpfaenger(Integer i){
+        if (i > recipients.size() - 1) {
+            return null;
+        }
+        return recipients.get(i);
+    }
+
     private String getFromDeviceStorage(String variableName, String defaultValue) {
         String generated;
         String id = sharedPreferences.getString(variableName, defaultValue);
@@ -327,13 +334,6 @@ public class DatabaseCon {
             generated = id;
 
         return generated;
-    }
-
-    public String getEmpfaenger(Integer i){
-        if (i > recipients.size() - 1) {
-            return null;
-        }
-        return recipients.get(i);
     }
 
     private static class StringGenerator {
