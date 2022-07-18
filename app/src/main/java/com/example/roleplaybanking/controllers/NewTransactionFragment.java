@@ -64,5 +64,6 @@ public class NewTransactionFragment extends Fragment {
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
         AccountOverviewActivity.fab.setVisibility(View.VISIBLE);
+        AccountOverviewActivity.isSubFragment = false;
     }
 }

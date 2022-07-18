@@ -56,6 +56,7 @@ public class AccountOverviewFragment extends Fragment {
         rvTransactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         AccountOverviewActivity.fab.setVisibility(View.VISIBLE);
+        AccountOverviewActivity.isSubFragment = false;
 
         return view;
     }
