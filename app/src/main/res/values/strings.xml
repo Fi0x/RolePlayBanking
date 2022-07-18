@@ -25,4 +25,12 @@
     <string name="your_accounts">Your Accounts</string>
     <string name="create_a_new_transaction">Create a new Transaction</string>
     <string name="new_transaction">New Transaction</string>
+    <string name="select_a_recipient">Type in a Name</string>
+    <string name="error_transaction_amount_null">Amount must not be empty</string>
+    <string name="error_transaction_amount_invalid">Amount must be smaller than your balance and greater than 0</string>
+    <string name="error_account_game_null">Game-name must not be empty</string>
+    <string name="error_account_name_null">Account-name must not be empty</string>
+    <string name="error_account_game_exists">A game with this name already exists</string>
+    <string name="error_account_balance_null">Default-Balance must not be empty</string>
+    <string name="error_account_game_not_found">does not exist as a game</string>
 </resources>

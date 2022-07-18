@@ -12,7 +12,7 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondary"
+        android:background="@color/secondary_variant"
         android:text="@string/new_transaction"
         android:textAlignment="viewStart"
         android:textColor="@color/onSecondary"
@@ -23,27 +23,32 @@
         android:id="@+id/textView8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/surface"
         android:text="@string/recipient"
-        android:textColor="@color/onBackground"
+        android:textColor="@color/onSurface"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/textView3" />
 
-    <Spinner
-        android:id="@+id/spinRecipientList"
+    <AutoCompleteTextView
+        android:id="@+id/txtRecipientAutoComplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foregroundTint="@color/onBackground"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
-        tools:layout_editor_absoluteX="-16dp" />
+        android:hint="@string/select_a_recipient"
+        android:inputType="text"
+        android:background="@color/surface"
+        android:foregroundTint="@color/onSurface"
+        android:completionThreshold="1"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/surface"
         android:text="@string/amount"
-        android:textColor="@color/onBackground"
+        android:textColor="@color/onSurface"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/spinRecipientList"
+        app:layout_constraintTop_toBottomOf="@+id/txtRecipientAutoComplete"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
@@ -60,8 +65,9 @@
         android:id="@+id/textView10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/surface"
         android:text="@string/current_balance"
-        android:textColor="@color/onBackground"
+        android:textColor="@color/onSurface"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/txtCurrentBalance"
         tools:layout_editor_absoluteX="0dp" />
@@ -70,7 +76,8 @@
         android:id="@+id/txtCurrentBalance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/onBackground"
+        android:background="@color/surface"
+        android:textColor="@color/onSurface"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btnSend"
@@ -80,9 +87,11 @@
         android:id="@+id/txtTransferAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/surface"
         android:inputType="number"
-        android:textColor="@color/onBackground"
+        android:textColor="@color/onSurface"
         android:textSize="36sp"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         tools:layout_editor_absoluteX="13dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

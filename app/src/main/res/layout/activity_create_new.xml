@@ -38,6 +38,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/surface"
                     android:hint="@string/game_name"
+                    android:inputType="text"
                     android:textColor="@color/onSurface"
                     android:textSize="24sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -54,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/surface"
                     android:hint="@string/account_name"
+                    android:inputType="text"
                     android:textColor="@color/onSurface"
                     android:textSize="24sp" />
 
