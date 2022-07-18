@@ -21,8 +21,11 @@ public class Account
         this.AccountID = AccountID;
     }
 
-    public void addTransaction(Transaction addTran){
-        AccountHistory.add(addTran);
+    public Transaction getHistory(Integer i){
+        if (i > AccountHistory.size() - 1) {
+            return null;
+        }
+        return AccountHistory.get(i);
     }
 }
 
