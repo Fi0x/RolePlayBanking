@@ -67,9 +67,9 @@ public class CreateNewActivity extends AppCompatActivity {
         String accountName = txtAccountName.getText().toString();
         String balanceString = txtDefaultBalance.getText().toString();
 
-        double balance;
+        long balance;
         try {
-            balance = Double.parseDouble(balanceString);
+            balance = Long.parseLong(balanceString);
         } catch (NumberFormatException e) {
             balance = 0;
         }
