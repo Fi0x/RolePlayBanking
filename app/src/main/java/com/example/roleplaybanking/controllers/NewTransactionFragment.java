@@ -81,15 +81,13 @@ public class NewTransactionFragment extends Fragment {
         TextInputEditText txtAmount = view.findViewById(R.id.txtTransferAmount);
         String amountString = txtAmount.getText().toString();
 
-        if(amountString == null || amountString.equals(""))
-        {
+        if (amountString == null || amountString.equals("")) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_null), Snackbar.LENGTH_LONG).show();
             return;
         }
 
-        Long amount = Long.parseLong(amountString);
-        if(amount <= 0 || amount > Account.currentAccount.balance)
-        {
+        double amount = Double.parseDouble(amountString);
+        if (amount <= 0 || amount > Account.currentAccount.balance) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
         }

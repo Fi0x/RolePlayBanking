@@ -1,11 +1,8 @@
 package com.example.roleplaybanking.controllers;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -33,8 +30,7 @@ public class AccountOverviewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
-        {
+        if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -42,27 +38,21 @@ public class AccountOverviewActivity extends AppCompatActivity {
         navCon = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navCon.navigate(R.id.action_FirstFragment_to_SecondFragment2);
-                fab.setVisibility(View.INVISIBLE);
-                isSubFragment = true;
-            }
+        fab.setOnClickListener(view -> {
+            navCon.navigate(R.id.action_FirstFragment_to_SecondFragment2);
+            fab.setVisibility(View.INVISIBLE);
+            isSubFragment = true;
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home)
-        {
-            if(isSubFragment)
-            {
+        if (item.getItemId() == android.R.id.home) {
+            if (isSubFragment) {
                 navCon.navigate(R.id.action_SecondFragment_to_FirstFragment2);
                 fab.setVisibility(View.VISIBLE);
                 isSubFragment = false;
-            }
-            else
+            } else
                 finish();
         }
 
