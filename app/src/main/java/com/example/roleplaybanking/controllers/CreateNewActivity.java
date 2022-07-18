@@ -62,8 +62,13 @@ public class CreateNewActivity extends AppCompatActivity {
         String accountName = txtAccountName.getText().toString();
         String balanceString = txtDefaultBalance.getText().toString();
 
-        Long balance;
-        balance = (long)Integer.parseInt(balanceString);
+        double balance;
+        try {
+            balance = Double.parseDouble(balanceString);
+        } catch (NumberFormatException e)
+        {
+            balance = 0;
+        }
 
         if (gameName == null || gameName.equals("")) {
             Snackbar.make(view, getString(R.string.error_account_game_null), Snackbar.LENGTH_LONG).show();
@@ -93,7 +98,7 @@ public class CreateNewActivity extends AppCompatActivity {
                 return;
             }
 
-            AccountSelectionActivity.DBc.registerGame(gameName, DBc.getNutzerID());//TODO: Hier existiert noch kein user weil der weiter unten erst registriert wird
+            AccountSelectionActivity.DBc.registerGame(gameName, DBc.getNutzerID());
 
         } else {
             if (!(Gameexist)) {
@@ -103,16 +108,20 @@ public class CreateNewActivity extends AppCompatActivity {
         }
 
         if (cbIsNew.isChecked()) {
-            AccountSelectionActivity.DBc.registerAccount(gameName, balance, accountName);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName);
         } else {
-            AccountSelectionActivity.DBc.registerAccount(gameName, (long) 0, accountName);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, (long) 0, accountName);
         }
-        finish();
     }
 
     public void checkBoxPressed(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         if (view.getId() == R.id.cbIsNewGame)
             txtDefaultBalanceVis.setVisibility(checked ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void closeActivityWhenDone()
+    {
+        finish();
     }
 }

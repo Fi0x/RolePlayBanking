@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.roleplaybanking.controllers.AccountSelectionActivity;
+import com.example.roleplaybanking.controllers.CreateNewActivity;
 import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,10 +59,12 @@ public class DatabaseCon {
         success = true;
     }
 
-    public void registerAccount(String Game, Number Geld, String Kontonamen) {
+    public void registerAccount(CreateNewActivity act, String Game, Number Geld, String Kontonamen) {
         DocMenge.get().addOnSuccessListener(documentSnapshot -> {
             Map<String, Object> m = documentSnapshot.getData();
             registerAccount(Game, Geld, (long) m.get("kontos"), Kontonamen, user.getNutzerID());
+            if (act != null)
+                act.closeActivityWhenDone();
         });
     }
 
