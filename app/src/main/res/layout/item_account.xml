@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:background="@color/secondary"
     android:orientation="vertical"
+    android:paddingLeft="5dp"
     android:paddingTop="5dp"
+    android:paddingRight="5dp"
     android:paddingBottom="5dp">
 
     <TextView
@@ -13,6 +15,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/surface"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:textColor="@color/onSurface"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -23,6 +27,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/surface"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:textAlignment="textEnd"
         android:textColor="@color/onSurface"
         android:textSize="24sp" />
