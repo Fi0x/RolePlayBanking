@@ -61,10 +61,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.ViewHo
             itemView.setOnClickListener(v -> {
                 final Intent intent = new Intent(itemView.getContext(), AccountOverviewActivity.class);
 
-                for (Account a : AccountSelectionActivity.accounts)
-                {
-                    if(a.name == nameTextView.getText() && a.gameName == gameTextView.getText())
-                    {
+                for (Account a : AccountSelectionActivity.accounts) {
+                    if (a.name == nameTextView.getText() && a.gameName == gameTextView.getText()) {
                         Account.currentAccount = a;
                         break;
                     }

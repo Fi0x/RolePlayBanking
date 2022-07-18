@@ -1,7 +1,5 @@
 package com.example.roleplaybanking.controllers;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +11,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.roleplaybanking.DatabaseCon;
+import com.example.roleplaybanking.database.DatabaseCon;
 import com.example.roleplaybanking.R;
-import com.example.roleplaybanking.structures.Account;
-import com.example.roleplaybanking.structures.Game;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -43,7 +39,7 @@ public class CreateNewActivity extends AppCompatActivity {
         txtDefaultBalanceVis = findViewById(R.id.txtDefaultBalance);
 
         Button btnCreate = findViewById(R.id.create_button);
-        btnCreate.setOnClickListener(view -> verifyAndCreate(view));
+        btnCreate.setOnClickListener(this::verifyAndCreate);
     }
 
     @Override
@@ -65,8 +61,13 @@ public class CreateNewActivity extends AppCompatActivity {
         String gameName = txtGameName.getText().toString();
         String accountName = txtAccountName.getText().toString();
         String balanceString = txtDefaultBalance.getText().toString();
-        //TODO: balanceString eingabe in Long umwandeln ohne Null Object zu generieren
-        Long balance = (long) 100000;
+
+        double balance;
+        try {
+            balance = Double.parseDouble(balanceString);
+        } catch (NumberFormatException e) {
+            balance = 0;
+        }
 
         if (gameName == null || gameName.equals("")) {
             Snackbar.make(view, getString(R.string.error_account_game_null), Snackbar.LENGTH_LONG).show();
@@ -96,7 +97,7 @@ public class CreateNewActivity extends AppCompatActivity {
                 return;
             }
 
-            AccountSelectionActivity.DBc.RegisterGame(gameName, DBc.getUser().getNutzerID());
+            AccountSelectionActivity.DBc.registerGame(gameName, DBc.getNutzerID());
 
         } else {
             if (!(Gameexist)) {
@@ -106,16 +107,19 @@ public class CreateNewActivity extends AppCompatActivity {
         }
 
         if (cbIsNew.isChecked()) {
-            AccountSelectionActivity.DBc.RegisterKonto(gameName, balance, accountName);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName);
         } else {
-            AccountSelectionActivity.DBc.RegisterKonto(gameName, (long) 0, accountName);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, (long) 0, accountName);
         }
-        finish();
     }
 
     public void checkBoxPressed(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         if (view.getId() == R.id.cbIsNewGame)
             txtDefaultBalanceVis.setVisibility(checked ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void closeActivityWhenDone() {
+        finish();
     }
 }

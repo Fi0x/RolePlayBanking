@@ -1,6 +1,5 @@
 package com.example.roleplaybanking.controllers;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class NewTransactionFragment extends Fragment {
     private String[] recipientList = new String[]{"Hans", "Klaus", "Dieter", "Olaf", "Karl"};
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_transaction, container, false);
@@ -46,26 +45,22 @@ public class NewTransactionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void sendTransaction(View view)
-    {
+    private void sendTransaction(View view) {
         //TODO: Get recipient name from spinner and validate
 
         TextInputEditText txtAmount = view.findViewById(R.id.txtTransferAmount);
         String amountString = txtAmount.getText().toString();
 
-        if(amountString == null || amountString.equals(""))
-        {
+        if (amountString == null || amountString.equals("")) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_null), Snackbar.LENGTH_LONG).show();
             return;
         }
 
         double amount = Double.parseDouble(amountString);
-        if(amount <= 0 || amount > Account.currentAccount.balance)
-        {
+        if (amount <= 0 || amount > Account.currentAccount.balance) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
         }
-
 
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);

@@ -1,9 +1,10 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.roleplaybanking.DatabaseCon;
+import com.example.roleplaybanking.database.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.controllers.helper.AccountsAdapter;
 import com.example.roleplaybanking.structures.Account;
@@ -13,12 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.util.ArrayList;
 
@@ -34,7 +29,9 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_selection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         adapter = new AccountsAdapter(accounts);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> openNewAccountCreation());
     }
@@ -44,34 +41,27 @@ public class AccountSelectionActivity extends AppCompatActivity {
         super.onStart();
 
         accounts.clear();
-        if(!(Alreadyconnected)){
-            DBc.ConnectUser(this, "Nutzer0", "AdminAdmin");
-            Alreadyconnected=true;
+        if (!(Alreadyconnected)) {
+            DBc.connectUser(this, getSharedPreferences("LoginFile", Context.MODE_PRIVATE));
+            Alreadyconnected = true;
         }
-        //When Zeitproblem gelöst accounts hinzufügen funktion
-        //DBc.ConnectKontos(this);
-        int i;
-        for (i = 0; DBc.getAccount(i) != null; i++) {
-            //Log.d("onStart", DBc.getAccount(i).name);
+
+        for (int i = 0; DBc.getAccount(i) != null; i++) {
             this.addAccountToList(DBc.getAccount(i));
+            System.out.println("Account " + i + " added");
         }
-        final RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvTransactionHistory);
+
+        final RecyclerView rvContacts = findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
 
     public void notifyDBConnectionEstablished() {
         accounts.clear();
         int i;
         for (i = 0; DBc.getAccount(i) != null; i++) {
-            //Log.d("onStart", DBc.getAccount(i).name);
             this.addAccountToList(DBc.getAccount(i));
+            System.out.println("Account " + i + " added again?");
         }
     }
 
@@ -80,8 +70,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
         adapter.notifyItemInserted(accounts.size() - 1);
     }
 
-    private void openNewAccountCreation()
-    {
+    private void openNewAccountCreation() {
         final Intent intent = new Intent(this, CreateNewActivity.class);
         startActivity(intent);
     }
