@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controllers.AccountSelectionActivity">
+    tools:context=".controllers.AccountOverviewActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background"
         android:theme="@style/Theme.RolePlayBanking.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -28,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/secondary_variant"
+        app:backgroundTint="@color/secondary"
         app:srcCompat="@android:drawable/ic_menu_send" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#A5A5A5"
+    android:background="@color/surface"
+    android:baselineAligned="false"
     android:orientation="horizontal"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:baselineAligned="false">
+    android:paddingBottom="10dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sender"
+            android:textColor="@color/onSurface"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -28,6 +29,7 @@
             android:layout_height="wrap_content"
             android:text="@string/recipient"
             android:textAlignment="textEnd"
+            android:textColor="@color/onSurface"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -44,6 +46,7 @@
             android:layout_height="wrap_content"
             android:text="@string/amount"
             android:textAlignment="textEnd"
+            android:textColor="@color/onSurface"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -53,6 +56,7 @@
             android:layout_height="wrap_content"
             android:text="@string/unknown_time"
             android:textAlignment="textEnd"
+            android:textColor="@color/onSurface"
             android:textSize="24sp" />
     </LinearLayout>
 
