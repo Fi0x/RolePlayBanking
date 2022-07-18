@@ -1,5 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -45,7 +46,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
         accounts.clear();
         if(!(Alreadyconnected)){
-            DBc.ConnectUser(this, "Nutzer0", "AdminAdmin");
+            DBc.ConnectUser(this, getSharedPreferences("LoginFile", Context.MODE_PRIVATE));
             Alreadyconnected=true;
         }
         //When Zeitproblem gelöst accounts hinzufügen funktion

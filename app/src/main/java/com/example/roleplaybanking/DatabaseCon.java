@@ -1,7 +1,9 @@
 
 package com.example.roleplaybanking;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.roleplaybanking.controllers.AccountSelectionActivity;
@@ -28,9 +30,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.File;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
 
 public class DatabaseCon {
 
@@ -46,6 +52,7 @@ public class DatabaseCon {
     private CollectionReference ColKont = db.collection("Konten");
     private CollectionReference ColHist = db.collection("History");
     private DocumentReference DocMenge = db.collection("Menge").document("Menge");
+    public SharedPreferences sharedPreferences;
 
     public void ReqisterUser(String Name, String User, String UserPW) {
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -117,7 +124,7 @@ public class DatabaseCon {
         Sucess = true;
     }
 
-    public void RegisterGame(String name, Number Admin){
+    public void RegisterGame(String name, Number Admin) {
         DocMenge.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -127,7 +134,7 @@ public class DatabaseCon {
         });
     }
 
-    public void RegisterG(String name, Number Admin, Number GameID){
+    public void RegisterG(String name, Number Admin, Number GameID) {
         Map<String, Object> m = new HashMap<>();
         m.put("Admin", Admin);
         m.put("GameID", GameID);
@@ -151,13 +158,20 @@ public class DatabaseCon {
         this.ConnectGames();
     }
 
-    public void ConnectUser(AccountSelectionActivity activity, String User, String UserPW) {
-        DocumentReference DocUser = ColUser.document(User);
-        PW = UserPW;
+    public void ConnectUser(AccountSelectionActivity activity, SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+        String currentUserID = getUserIdFromStorage();
+        String currentUserPW = getUserPWFromStorage();
+
+        DocumentReference DocUser = ColUser.document(currentUserID);
+        PW = currentUserPW;
         DocUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> m = documentSnapshot.getData();
+                if (m == null) {
+                    //TODO: register new user in DB
+                }
                 //Log.d("ConnectUser", documentSnapshot.getData().toString());
                 Connect(activity, m.get("Name").toString(), (long) m.get("NutzerID"), m.get("NutzerName").toString(), m.get("NutzerPW").toString());
             }
@@ -166,7 +180,7 @@ public class DatabaseCon {
 
     public void ConnectKontos(AccountSelectionActivity activity) {
         //Log.d("ConnectKonto", "hey execute");
-        if(user == null) {
+        if (user == null) {
             //Log.d("ConnectKonto", "hey User = null");
             return;
         }
@@ -239,7 +253,7 @@ public class DatabaseCon {
         Trans.add(newTran);
     }
 
-    public void ConnectEmpfaenger(){
+    public void ConnectEmpfaenger() {
         ColKont.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -258,11 +272,11 @@ public class DatabaseCon {
                 });
     }
 
-    public void addEmpfaenger(String Empfaenger){
+    public void addEmpfaenger(String Empfaenger) {
         Empfaengernamen.add(Empfaenger);
     }
 
-    public void ConnectGames(){
+    public void ConnectGames() {
         db.collection("Game").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -281,7 +295,7 @@ public class DatabaseCon {
                 });
     }
 
-    public void addGame(String name){
+    public void addGame(String name) {
         Gamenames.add(name);
     }
 
@@ -348,16 +362,17 @@ public class DatabaseCon {
         return Trans.get(i);
     }
 
-    public void OrderTransactions(){
+    public void OrderTransactions() {
         int i, j;
         for (i = 0; this.getAccount(i) != null; i++) {
             for (j = 0; this.getTrans(j) != null; j++) {
-               if(Trans.get(j).sender.contentEquals(Konten.get(i).name) || Trans.get(j).recipient.contentEquals(Konten.get(i).name)){
-                   Konten.get(i).AccountHistory.add(Trans.get(j));
-               }
+                if (Trans.get(j).sender.contentEquals(Konten.get(i).name) || Trans.get(j).recipient.contentEquals(Konten.get(i).name)) {
+                    Konten.get(i).AccountHistory.add(Trans.get(j));
+                }
             }
         }
     }
+
     public String getGame(Integer i) {
         if (i > Gamenames.size() - 1) {
             return null;
@@ -366,8 +381,69 @@ public class DatabaseCon {
     }
 
 
-    public NutzerClass getUser(){
+    public NutzerClass getUser() {
         return user;
     }
 
+    private String getUserIdFromStorage() {
+        String generated;
+        String id = sharedPreferences.getString("UserID", "0123456789");
+        if (id.equals("0123456789")) {
+            generated = new StringGenerator().nextString();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("UserID", generated);
+            editor.apply();
+        } else
+            generated = id;
+
+        return generated;
+    }
+
+    private String getUserPWFromStorage() {
+        String generated;
+        String id = sharedPreferences.getString("UserPW", "0123456789");
+        if (id.equals("0123456789")) {
+            generated = new StringGenerator().nextString();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("UserPW", generated);
+            editor.apply();
+        } else
+            generated = id;
+
+        return generated;
+    }
+
+    private static class StringGenerator {
+        public String nextString() {
+            for (int idx = 0; idx < buf.length; ++idx)
+                buf[idx] = symbols[random.nextInt(symbols.length)];
+            return new String(buf);
+        }
+
+        public static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        public static final String lower = upper.toLowerCase();
+
+        public static final String digits = "0123456789";
+
+        public static final String alphanum = upper + lower + digits;
+
+        private final Random random;
+
+        private final char[] symbols;
+
+        private final char[] buf;
+
+        public StringGenerator(int length, Random random, String symbols) {
+            if (length < 1) throw new IllegalArgumentException();
+            if (symbols.length() < 2) throw new IllegalArgumentException();
+            this.random = Objects.requireNonNull(random);
+            this.symbols = symbols.toCharArray();
+            this.buf = new char[length];
+        }
+
+        public StringGenerator() {
+            this(32, new SecureRandom(), alphanum);
+        }
+    }
 }
