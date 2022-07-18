@@ -101,7 +101,7 @@ public class DatabaseCon {
     }
 
     public void RegisterT(Number Betrag, String Empfaenger, Number HistoryID, String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time, Account fromAcc) {
-        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (double) Betrag, time, Notiz);
+        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (long) Betrag, time, Notiz);
         Map<String, Object> m = new HashMap<>();
         m.put("Betrag", Betrag);
         m.put("Empfaenger", Empfaenger);
@@ -166,6 +166,7 @@ public class DatabaseCon {
 
     public void ConnectKontos(AccountSelectionActivity activity) {
         //Log.d("ConnectKonto", "hey execute");
+        Konten.clear();
         if(user == null) {
             //Log.d("ConnectKonto", "hey User = null");
             return;
@@ -199,6 +200,7 @@ public class DatabaseCon {
     }
 
     public void ConnectTrans() {
+        Trans.clear();
         ColHist.whereEqualTo("Nutzer", user.getNutzerID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -285,7 +287,7 @@ public class DatabaseCon {
         Gamenames.add(name);
     }
 
-    public void TransferMoney(double Betrag, String Kontonamen, Number senderKontoID) {
+    public void TransferMoney(long Betrag, String Kontonamen, Number senderKontoID) {
         ColKont.whereEqualTo("Kontoname", Kontonamen)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -304,7 +306,7 @@ public class DatabaseCon {
                 });
     }
 
-    public void TransferM(double Betrag, Number KontoIDempfaenger, Number senderKontoID) {
+    public void TransferM(long Betrag, Number KontoIDempfaenger, Number senderKontoID) {
         ColKont.document(KontoIDempfaenger.toString()).update("Geld", FieldValue.increment(Betrag));
         ColKont.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1 * Betrag));
     }
@@ -363,6 +365,13 @@ public class DatabaseCon {
             return null;
         }
         return Gamenames.get(i);
+    }
+
+    public String getEmpfaenger(Integer i){
+        if (i > Empfaengernamen.size() - 1) {
+            return null;
+        }
+        return Empfaengernamen.get(i);
     }
 
 

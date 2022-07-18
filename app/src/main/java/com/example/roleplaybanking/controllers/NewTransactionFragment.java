@@ -2,6 +2,8 @@ package com.example.roleplaybanking.controllers;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +18,20 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.roleplaybanking.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Timestamp;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class NewTransactionFragment extends Fragment {
-    private String[] recipientList = new String[]{"Hans", "Klaus", "Dieter", "Olaf", "Karl"};
+    private ArrayList<String> recipientList = new ArrayList<>();
+    public DatabaseCon DBc;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_transaction, container, false);
@@ -30,7 +39,12 @@ public class NewTransactionFragment extends Fragment {
         TextView txtBalance = view.findViewById(R.id.txtCurrentBalance);
         txtBalance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
 
-        //TODO: Add possible recipients to recipient list
+        DBc = AccountSelectionActivity.DBc;
+        int i;
+        for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
+            //Log.d("onStart", DBc.getAccount(i).name);
+            recipientList.add(DBc.getEmpfaenger(i));
+        }
 
         Button sendButton = view.findViewById(R.id.btnSend);
         sendButton.setOnClickListener(view1 -> sendTransaction(view));
@@ -48,7 +62,21 @@ public class NewTransactionFragment extends Fragment {
 
     private void sendTransaction(View view)
     {
-        //TODO: Get recipient name from spinner and validate
+        AutoCompleteTextView txtAutoComplete = view.findViewById(R.id.txtRecipientAutoComplete);
+        String Ename = txtAutoComplete.getText().toString();
+        boolean found = false;
+        int i;
+        for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
+            //Log.d("onStart", DBc.getAccount(i).name);
+            if(DBc.getEmpfaenger(i).contentEquals(Ename)){
+                found = true;
+            }
+        }
+
+        if(!found){
+            Snackbar.make(view, "Empfaenger not found", Snackbar.LENGTH_LONG).show();
+            return;
+        }
 
         TextInputEditText txtAmount = view.findViewById(R.id.txtTransferAmount);
         String amountString = txtAmount.getText().toString();
@@ -59,13 +87,22 @@ public class NewTransactionFragment extends Fragment {
             return;
         }
 
-        double amount = Double.parseDouble(amountString);
+        Long amount = Long.parseLong(amountString);
         if(amount <= 0 || amount > Account.currentAccount.balance)
         {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
         }
 
+        Date date = Calendar.getInstance().getTime();
+        Timestamp time = new Timestamp(date);
+        DBc.RegisterTran(amount, Ename, "", Account.currentAccount.name, time, Account.currentAccount);
+
+        DBc.TransferMoney(amount, Ename, Account.currentAccount.AccountID);
+        Account.currentAccount.balance -= amount;
+        Log.d("Nach Transfervon Money", Account.currentAccount.AccountID.toString());
+
+        //TODO: Update die History
 
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
