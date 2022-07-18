@@ -3,6 +3,7 @@ package com.example.roleplaybanking.controllers;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -65,8 +66,9 @@ public class CreateNewActivity extends AppCompatActivity {
         String gameName = txtGameName.getText().toString();
         String accountName = txtAccountName.getText().toString();
         String balanceString = txtDefaultBalance.getText().toString();
-        //TODO: balanceString eingabe in Long umwandeln ohne Null Object zu generieren
-        Long balance = (long) 100000;
+
+        Long balance;
+        balance = (long)Integer.parseInt(balanceString);
 
         if (gameName == null || gameName.equals("")) {
             Snackbar.make(view, getString(R.string.error_account_game_null), Snackbar.LENGTH_LONG).show();
