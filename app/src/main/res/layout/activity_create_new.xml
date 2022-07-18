@@ -5,7 +5,7 @@
     android:id="@+id/account_dock"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controllers.AccountSelectionActivity">
+    tools:context=".controllers.CreateNewActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -63,29 +63,11 @@
                 android:id="@+id/create_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/secondary"
+                android:backgroundTint="@color/secondary_variant"
                 android:text="@string/create_account"
                 android:textColor="@color/onSecondary"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtDefaultBalance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/txtAccountName"
-                tools:layout_editor_absoluteX="101dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txInDefaultBalance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/surface"
-                    android:hint="@string/default_balance"
-                    android:textColor="@color/onSurface"
-                    android:inputType="number"
-                    android:textSize="24sp" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
                 android:id="@+id/cbIsNewGame"
@@ -96,7 +78,27 @@
                 android:textColor="@color/onSurface"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDefaultBalance" />
+                android:onClick="checkBoxPressed"
+                app:layout_constraintTop_toBottomOf="@+id/txtAccountName" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtDefaultBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@+id/cbIsNewGame"
+                tools:layout_editor_absoluteX="101dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txInDefaultBalance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/surface"
+                    android:hint="@string/default_balance"
+                    android:inputType="number"
+                    android:textColor="@color/onSurface"
+                    android:textSize="24sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

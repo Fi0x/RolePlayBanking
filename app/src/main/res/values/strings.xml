@@ -24,4 +24,5 @@
     <string name="create_a_new_game">Create as a new Game</string>
     <string name="your_accounts">Your Accounts</string>
     <string name="create_a_new_transaction">Create a new Transaction</string>
+    <string name="new_transaction">New Transaction</string>
 </resources>
