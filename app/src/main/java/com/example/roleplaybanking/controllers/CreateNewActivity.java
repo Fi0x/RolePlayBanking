@@ -1,9 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.roleplaybanking.DatabaseCon;
 import com.example.roleplaybanking.R;
-import com.example.roleplaybanking.structures.Account;
-import com.example.roleplaybanking.structures.Game;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -98,7 +93,7 @@ public class CreateNewActivity extends AppCompatActivity {
                 return;
             }
 
-            AccountSelectionActivity.DBc.RegisterGame(gameName, DBc.getUser().getNutzerID());
+            AccountSelectionActivity.DBc.registerGame(gameName, DBc.getNutzerID());//TODO: Hier existiert noch kein user weil der weiter unten erst registriert wird
 
         } else {
             if (!(Gameexist)) {
@@ -108,9 +103,9 @@ public class CreateNewActivity extends AppCompatActivity {
         }
 
         if (cbIsNew.isChecked()) {
-            AccountSelectionActivity.DBc.RegisterKonto(gameName, balance, accountName);
+            AccountSelectionActivity.DBc.registerAccount(gameName, balance, accountName);
         } else {
-            AccountSelectionActivity.DBc.RegisterKonto(gameName, (long) 0, accountName);
+            AccountSelectionActivity.DBc.registerAccount(gameName, (long) 0, accountName);
         }
         finish();
     }

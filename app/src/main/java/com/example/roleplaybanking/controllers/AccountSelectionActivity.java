@@ -15,12 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
 import java.util.ArrayList;
 
 public class AccountSelectionActivity extends AppCompatActivity {
@@ -46,7 +40,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
         accounts.clear();
         if(!(Alreadyconnected)){
-            DBc.ConnectUser(this, getSharedPreferences("LoginFile", Context.MODE_PRIVATE));
+            DBc.connectUser(this, getSharedPreferences("LoginFile", Context.MODE_PRIVATE));
             Alreadyconnected=true;
         }
         //When Zeitproblem gelöst accounts hinzufügen funktion
