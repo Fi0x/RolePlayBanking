@@ -147,7 +147,8 @@ public class DatabaseCon {
             if (m == null) {
                 registerUser(currentUserID, currentUserID, currentUserPW);
             }
-            connect(activity, m.get("Name").toString(), (long) m.get("NutzerID"), m.get("NutzerName").toString(), m.get("NutzerPW").toString());
+            else
+                connect(activity, m.get("name").toString(), (long) m.get("nutzerID"), m.get("nutzerName").toString(), m.get("nutzerPW").toString());
         });
     }
 
