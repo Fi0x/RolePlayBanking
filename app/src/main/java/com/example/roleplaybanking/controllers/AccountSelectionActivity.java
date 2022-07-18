@@ -48,7 +48,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
 
         for (int i = 0; DBc.getAccount(i) != null; i++) {
             this.addAccountToList(DBc.getAccount(i));
-            System.out.println("Account " + i + " added");
         }
 
         final RecyclerView rvContacts = findViewById(R.id.rvTransactionHistory);
@@ -61,7 +60,6 @@ public class AccountSelectionActivity extends AppCompatActivity {
         int i;
         for (i = 0; DBc.getAccount(i) != null; i++) {
             this.addAccountToList(DBc.getAccount(i));
-            System.out.println("Account " + i + " added again?");
         }
     }
 

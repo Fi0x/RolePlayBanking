@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.example.roleplaybanking.DatabaseCon;
+import com.example.roleplaybanking.database.DatabaseCon;
 import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.structures.Account;
 import com.google.android.material.snackbar.Snackbar;
@@ -94,9 +94,9 @@ public class NewTransactionFragment extends Fragment {
 
         Date date = Calendar.getInstance().getTime();
         Timestamp time = new Timestamp(date);
-        DBc.RegisterTran(amount, Ename, "", Account.currentAccount.name, time, Account.currentAccount);
+        DBc.registerTransaction(amount, Ename, "", Account.currentAccount.name, time, Account.currentAccount);
 
-        DBc.TransferMoney(amount, Ename, Account.currentAccount.AccountID);
+        DBc.transferMoney(amount, Ename, Account.currentAccount.AccountID);
         Account.currentAccount.balance -= amount;
         Log.d("Nach Transfervon Money", Account.currentAccount.AccountID.toString());
 

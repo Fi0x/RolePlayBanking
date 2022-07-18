@@ -114,7 +114,7 @@ public class CreateNewActivity extends AppCompatActivity {
         if (cbIsNew.isChecked()) {
             AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName);
         } else {
-            AccountSelectionActivity.DBc.registerAccount(this, gameName, (long) 0, accountName);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, (double) 0, accountName);
         }
     }
 
