@@ -1,5 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -64,6 +65,7 @@ public class CreateNewActivity extends AppCompatActivity {
         //TODO: balanceString eingabe in Long umwandeln ohne Null Object zu generieren
         Long balance = (long)100000;
 
+        //TODO snackbar verwenden
         if(accountName == null || accountName.equals("") || gameName == null || gameName.equals(""))
         {
             if((accountName == null || accountName.equals("")) && (gameName == null || gameName.equals(""))){
@@ -92,6 +94,7 @@ public class CreateNewActivity extends AppCompatActivity {
 
         if(cbIsNew.isChecked())
         {
+            //TODO snackbar verwenden
             if(Gameexist){
                 txtGameName.setText(gameName + " (Gibt es bereits!)");
                 txtGameName.setBackgroundColor(Color.RED);
@@ -109,6 +112,7 @@ public class CreateNewActivity extends AppCompatActivity {
         }
         else
         {
+            //TODO snackbar verwenden
             if(!(Gameexist)){
                 txtGameName.setText(gameName + " (Gibt es nicht!)");
                 txtGameName.setBackgroundColor(Color.RED);
