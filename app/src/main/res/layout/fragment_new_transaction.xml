@@ -12,7 +12,7 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondary"
+        android:background="@color/secondary_variant"
         android:text="@string/new_transaction"
         android:textAlignment="viewStart"
         android:textColor="@color/onSecondary"
