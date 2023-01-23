@@ -84,7 +84,7 @@ public class NewTransactionFragment extends Fragment {
         }
 
         double amount = Double.parseDouble(amountString);
-        if (amount <= 0 || amount > Account.currentAccount.balance) {
+        if ((amount <= 0 && Account.currentAccount.name.equals(DBc.getAdminName(Account.currentAccount.gameName))) || amount > Account.currentAccount.balance) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
         }
