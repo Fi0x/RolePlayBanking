@@ -258,6 +258,11 @@ public class DatabaseCon {
         return user.getName();
     }
 
+    public String getAdminName(String gameName) {
+        //TODO: Get the admin-name for a specific game from the DB
+        return null;
+    }
+
     public String getNutzerName() {
         return user.getNutzerName();
     }
