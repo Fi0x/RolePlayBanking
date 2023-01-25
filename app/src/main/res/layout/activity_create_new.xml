@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/onBackground"
                 android:text="@string/create_a_new_game"
-                android:textColor="@color/onSurface"
+                android:textColor="@color/onBackground"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:onClick="checkBoxPressed"
