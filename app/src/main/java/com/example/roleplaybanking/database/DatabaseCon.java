@@ -91,7 +91,7 @@ public class DatabaseCon {
     }
 
     public void registerTransaction(Number Betrag, String Empfaenger, Number HistoryID, String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time, Account fromAcc) {
-        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (long) Betrag, time, Notiz);
+        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (double) Betrag, time, Notiz);
         Map<String, Object> m = new HashMap<>();
         m.put("Betrag", Betrag);
         m.put("Empfaenger", Empfaenger);
@@ -237,7 +237,7 @@ public class DatabaseCon {
         games.add(name);
     }
 
-    public void transferMoney(long Betrag, String Kontonamen, Number senderKontoID) {
+    public void transferMoney(double Betrag, String Kontonamen, Number senderKontoID) {
         ColAccount.whereEqualTo("Kontoname", Kontonamen).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -249,7 +249,7 @@ public class DatabaseCon {
         });
     }
 
-    public void transferMoney(long Betrag, Number KontoIDempfaenger, Number senderKontoID) {
+    public void transferMoney(double Betrag, Number KontoIDempfaenger, Number senderKontoID) {
         ColAccount.document(KontoIDempfaenger.toString()).update("Geld", FieldValue.increment(Betrag));
         ColAccount.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1 * Betrag));
     }
