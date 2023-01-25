@@ -86,7 +86,7 @@ public class NewTransactionFragment extends Fragment {
             return;
         }
 
-        long amount = Long.parseLong(amountString);
+        double amount = Double.parseDouble(amountString);
         if (amount <= 0 || amount > Account.currentAccount.balance) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;

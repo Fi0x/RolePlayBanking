@@ -7,7 +7,7 @@ public class Account {
 
     public String gameName = "Unknown Game";
     public String name = "Unknown Account";
-    public long balance = 0;
+    public double balance = 0;
     public String currencySign = "€";
     public Number AccountID = -1;
     public ArrayList<Transaction> AccountHistory = new ArrayList<>();
@@ -15,7 +15,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(String gameName, String name, long balance, Number AccountID) {
+    public Account(String gameName, String name, double balance, Number AccountID) {
         this.gameName = gameName;
         this.name = name;
         this.balance = balance;
