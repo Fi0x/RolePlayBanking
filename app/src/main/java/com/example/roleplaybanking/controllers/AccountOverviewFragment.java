@@ -32,6 +32,7 @@ public class AccountOverviewFragment extends Fragment {
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
 
+        //TODO: Update this more often, not only in onCreate
         for (int i = 0; Account.currentAccount.getHistory(i) != null; i++) {
             transactions.add(Account.currentAccount.getHistory(i));
         }
