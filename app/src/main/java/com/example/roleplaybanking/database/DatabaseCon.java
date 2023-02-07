@@ -336,6 +336,11 @@ public class DatabaseCon {
         return generated;
     }
 
+    public void deleteAccount(String gameName, String accountName)
+    {
+        //TODO: Hier müsste man noch den account in der datenbank löschen
+    }
+
     private static class StringGenerator {
         public static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public static final String lower = upper.toLowerCase();
