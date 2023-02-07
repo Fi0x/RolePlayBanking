@@ -296,6 +296,7 @@ public class DatabaseCon {
     public void orderTransactions() {
         int i, j;
         for (i = 0; this.getAccount(i) != null; i++) {
+            accounts.get(i).AccountHistory.clear();
             for (j = 0; this.getTransaction(j) != null; j++) {
                 if (transactions.get(j).sender.contentEquals(accounts.get(i).name) || transactions.get(j).recipient.contentEquals(accounts.get(i).name)) {
                     accounts.get(i).AccountHistory.add(transactions.get(j));
