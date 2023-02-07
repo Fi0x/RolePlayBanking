@@ -97,8 +97,6 @@ public class NewTransactionFragment extends Fragment {
         Account.currentAccount.balance -= amount;
         Log.d("Nach Transfervon Money", Account.currentAccount.AccountID.toString());
 
-        //TODO: Update die History
-
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
         AccountOverviewActivity.fab.setVisibility(View.VISIBLE);
