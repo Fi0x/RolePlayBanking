@@ -1,8 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -106,8 +103,6 @@ public class NewTransactionFragment extends Fragment {
         DBc.transferMoney(amount, Ename, Account.currentAccount.AccountID, FromAdmin);
         Account.currentAccount.balance -= amount;
         Log.d("Nach Transfervon Money", Account.currentAccount.AccountID.toString());
-
-        //TODO: Update die History
 
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);

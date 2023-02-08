@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,15 +27,18 @@ public class AccountOverviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        System.out.println("CreateView called with transaction count: " + transactions.size());
         View view = inflater.inflate(R.layout.fragment_account_overview, container, false);
 
         TextView balance = view.findViewById(R.id.txt_balance);
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
 
-        for (int i = 0; Account.currentAccount.getHistory(i) != null; i++) {
-            transactions.add(Account.currentAccount.getHistory(i));
-        }
+        DBc.orderTransactions();
+        transactions.clear();
+        transactions.addAll(Account.currentAccount.AccountHistory);
+
+        System.out.println("CreateView updated with transaction count: " + transactions.size());
 
         final RecyclerView rvTransactions = (RecyclerView) view.findViewById(R.id.rvTransactionHistory);
         rvTransactions.setAdapter(new TransactionsAdapter(transactions));
