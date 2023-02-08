@@ -64,7 +64,6 @@ public class NewTransactionFragment extends Fragment {
         boolean found = false;
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            //Log.d("onStart", DBc.getAccount(i).name);
             if(DBc.getEmpfaenger(i).contentEquals(Ename)){
                 found = true;
             }
@@ -84,7 +83,9 @@ public class NewTransactionFragment extends Fragment {
         }
 
         double amount = Double.parseDouble(amountString);
-        if (amount <= 0 || amount > Account.currentAccount.balance) {
+        Number AID = DBc.getAdminName(Account.currentAccount.gameName);
+        boolean FromAdmin = Account.currentAccount.AccountID.equals(AID);
+        if (!FromAdmin && (amount <= 0 || amount > Account.currentAccount.balance)) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
         }
@@ -93,11 +94,10 @@ public class NewTransactionFragment extends Fragment {
         Timestamp time = new Timestamp(date);
         DBc.registerTransaction(amount, Ename, "", Account.currentAccount.name, time, Account.currentAccount);
 
-        DBc.transferMoney(amount, Ename, Account.currentAccount.AccountID);
-        Account.currentAccount.balance -= amount;
-        Log.d("Nach Transfervon Money", Account.currentAccount.AccountID.toString());
-
-        //TODO: Update die History
+        DBc.transferMoney(amount, Ename, Account.currentAccount.AccountID, FromAdmin);
+        if(!FromAdmin){
+            Account.currentAccount.balance -= amount;
+        }
 
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
