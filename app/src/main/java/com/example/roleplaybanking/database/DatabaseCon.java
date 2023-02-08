@@ -60,9 +60,12 @@ public class DatabaseCon {
         success = true;
     }
 
-    public void registerAccount(CreateNewActivity act, String Game, Number Geld, String Kontonamen) {
+    public void registerAccount(CreateNewActivity act, String Game, Number Geld, String Kontonamen, boolean isnewGame) {
         DocMenge.get().addOnSuccessListener(documentSnapshot -> {
             Map<String, Object> m = documentSnapshot.getData();
+            if(isnewGame){
+                registerGame(Game, (Number)m.get("kontos"));
+            }
             registerAccount(Game, Geld, (long) m.get("kontos"), Kontonamen, user.getNutzerID());
             if (act != null)
                 act.closeActivityWhenDone();
@@ -265,12 +268,12 @@ public class DatabaseCon {
 
     public Number getAdminName(String gameName) {
         int i = 0;
-        while(i > games.size() - 1){
-            if(games.get(i).name == gameName){
+        while(i < games.size() - 1){
+            if(games.get(i).name.equals(gameName)){
                 return games.get(i).adminID;
             }
         }
-        return null;
+        return -1;
     }
 
     public String getNutzerName() {

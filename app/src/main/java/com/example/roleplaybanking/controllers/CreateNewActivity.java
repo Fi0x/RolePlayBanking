@@ -102,7 +102,7 @@ public class CreateNewActivity extends AppCompatActivity {
                 return;
             }
 
-            AccountSelectionActivity.DBc.registerGame(gameName, DBc.getNutzerID());
+            //AccountSelectionActivity.DBc.registerGame(gameName, DBc.getNutzerID());
 
         } else {
             if (!(Gameexist)) {
@@ -112,9 +112,9 @@ public class CreateNewActivity extends AppCompatActivity {
         }
 
         if (cbIsNew.isChecked()) {
-            AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName, true);
         } else {
-            AccountSelectionActivity.DBc.registerAccount(this, gameName, 0, accountName);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, 0, accountName, false);
         }
     }
 
