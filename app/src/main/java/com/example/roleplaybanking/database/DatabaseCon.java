@@ -168,7 +168,7 @@ public class DatabaseCon {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> m = document.getData();
-                        addAccount(m.get("Game").toString(), m.get("Kontoname").toString(), (double) m.get("Geld"), (Number) m.get("KontoID"));
+                        addAccount(m.get("Game").toString(), m.get("Kontoname").toString(), Double.parseDouble(m.get("Geld").toString()), (Number) m.get("KontoID"));
                     }
                     if (act != null)
                         act.notifyDBConnectionEstablished();
