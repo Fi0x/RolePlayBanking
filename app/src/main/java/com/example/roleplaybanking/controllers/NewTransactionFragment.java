@@ -85,13 +85,9 @@ public class NewTransactionFragment extends Fragment {
 
         double amount = Double.parseDouble(amountString);
         Number AID = DBc.getAdminName(Account.currentAccount.gameName);
-        boolean FromAdmin;
-        if(Account.currentAccount.AccountID.equals(AID)){
-            FromAdmin = true;
-        }else{
-            FromAdmin = false;
-        }
-        if ((!FromAdmin && amount <= 0) || amount > Account.currentAccount.balance) {
+        boolean FromAdmin = Account.currentAccount.AccountID.equals(AID);
+        System.out.println("Is from admin: " + FromAdmin);
+        if (!FromAdmin && (amount <= 0 || amount > Account.currentAccount.balance)) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
         }
