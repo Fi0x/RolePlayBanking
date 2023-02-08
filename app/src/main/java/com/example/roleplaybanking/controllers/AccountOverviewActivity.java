@@ -66,8 +66,7 @@ public class AccountOverviewActivity extends AppCompatActivity {
         else if(id == R.id.action_settings)
         {
             //TODO: Add a popup to verify deletion of the account
-            //TODO: Delete account
-            System.out.println("Account deletion pressed");
+            AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.name, Account.currentAccount.AccountID);
         }
 
         return super.onOptionsItemSelected(item);
