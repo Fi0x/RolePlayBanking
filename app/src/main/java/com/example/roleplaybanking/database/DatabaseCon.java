@@ -336,9 +336,45 @@ public class DatabaseCon {
         return generated;
     }
 
-    public void deleteAccount(String gameName, String accountName)
+    public void deleteAccount(String gameName, Number accountId)
     {
-        //TODO: Hier müsste man noch den account in der datenbank löschen
+        int i= 0;
+        for( i = 0; i > accounts.size()-1; i++){
+            if(accounts.get(i).AccountID.equals(accountId)){
+                Map<String, Object> m = new HashMap<>();
+                m.put("Game", accounts.get(i).gameName);
+                m.put("Geld", accounts.get(i).balance);
+                m.put("KontoID", accounts.get(i).AccountID);
+                m.put("Kontoname", accounts.get(i).name);
+                m.put("Nutzer", accountId);
+                database.collection("deletedKonten").document(accounts.get(i).AccountID.toString()).set(m);
+                accounts.remove(i);
+                break;
+            }
+        }
+        ColAccount.document(accountId.toString()).delete();
+        ColAccount.whereEqualTo("Game", gameName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if(task.getResult()==null){
+                       database.collection("Game").whereEqualTo("Name", gameName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                           @Override
+                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                               if (task.isSuccessful()) {
+                                   for (QueryDocumentSnapshot document : task.getResult()) {
+                                       Number d = (Number)document.get("GameID");
+                                       database.collection("Game").document(d.toString()).delete();
+                                   }
+                               }
+                           }
+                       });
+                    }
+                }
+            }
+        });
     }
 
     private static class StringGenerator {
