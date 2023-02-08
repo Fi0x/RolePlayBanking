@@ -302,6 +302,10 @@ public class DatabaseCon {
         }
         return accounts.get(i);
     }
+    public ArrayList<Account> getAllAccounts()
+    {
+        return accounts;
+    }
 
     @Nullable
     public Transaction getTransaction(Integer i) {
@@ -359,6 +363,7 @@ public class DatabaseCon {
     {
         int i= 0;
         for( i = 0; i > accounts.size()-1; i++){
+            //TODO: Make this work (For some reason the account is never found)
             if(accounts.get(i).AccountID.equals(accountId)){
                 Map<String, Object> m = new HashMap<>();
                 m.put("Game", accounts.get(i).gameName);
