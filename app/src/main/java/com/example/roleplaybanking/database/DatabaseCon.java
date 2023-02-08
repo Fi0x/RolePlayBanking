@@ -267,8 +267,8 @@ public class DatabaseCon {
     }
 
     public Number getAdminName(String gameName) {
-        int i = 0;
-        while(i < games.size() - 1){
+
+        for(int i = 0; i < games.size() - 1; i++){
             if(games.get(i).name.equals(gameName)){
                 return games.get(i).adminID;
             }

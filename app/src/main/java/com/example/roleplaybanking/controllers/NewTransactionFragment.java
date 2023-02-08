@@ -64,7 +64,6 @@ public class NewTransactionFragment extends Fragment {
         boolean found = false;
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            //Log.d("onStart", DBc.getAccount(i).name);
             if(DBc.getEmpfaenger(i).contentEquals(Ename)){
                 found = true;
             }
@@ -99,8 +98,6 @@ public class NewTransactionFragment extends Fragment {
         if(!FromAdmin){
             Account.currentAccount.balance -= amount;
         }
-
-        Log.d("Nach Transfervon Money", Account.currentAccount.AccountID.toString());
 
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);
