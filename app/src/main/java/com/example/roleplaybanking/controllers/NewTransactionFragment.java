@@ -40,7 +40,11 @@ public class NewTransactionFragment extends Fragment {
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
             //Log.d("onStart", DBc.getAccount(i).name);
-            recipientList.add(DBc.getEmpfaenger(i));
+            if(Account.currentAccount.gameName.contentEquals(DBc.getEmpfaenger(i).GameName)){
+                if(!recipientList.contains(DBc.getEmpfaenger(i).Name)){
+                    recipientList.add(DBc.getEmpfaenger(i).Name);
+                }
+            }
         }
 
         Button sendButton = view.findViewById(R.id.btnSend);
@@ -64,7 +68,7 @@ public class NewTransactionFragment extends Fragment {
         boolean found = false;
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            if(DBc.getEmpfaenger(i).contentEquals(Ename)){
+            if(DBc.getEmpfaenger(i).Name.contentEquals(Ename)){
                 found = true;
             }
         }

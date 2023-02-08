@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.roleplaybanking.controllers.AccountSelectionActivity;
 import com.example.roleplaybanking.controllers.CreateNewActivity;
 import com.example.roleplaybanking.structures.Account;
+import com.example.roleplaybanking.structures.Recipients;
 import com.example.roleplaybanking.structures.Transaction;
 import com.example.roleplaybanking.structures.Game;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,7 @@ public class DatabaseCon {
     private boolean success = false;
     private final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Transaction> transactions = new ArrayList<>();
-    private final ArrayList<String> recipients = new ArrayList<>();
+    private final ArrayList<Recipients> recipients = new ArrayList<>();
     private final ArrayList<Game> games = new ArrayList<>();
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
     private final CollectionReference ColUser = database.collection("Nutzer");
@@ -83,7 +84,8 @@ public class DatabaseCon {
         database.collection("Konten").document(KontoID.toString()).set(m);
         DocMenge.update("kontos", (long) KontoID + 1);
         accounts.add(newAcc);
-        recipients.add(Kontonamen);
+        Recipients R = new Recipients(Kontonamen, Game);
+        recipients.add(R);
         success = true;
     }
 
@@ -216,15 +218,19 @@ public class DatabaseCon {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    addRecipient(m.get("Kontoname").toString());
+                    for(int i = 0; i < games.size() -1; i++){
+                        if(games.get(i).name.contentEquals(m.get("Game").toString())){
+                            addRecipient(m.get("Kontoname").toString(), m.get("Game").toString());
+                        }
+                    }
                 }
-
             }
         });
     }
 
-    public void addRecipient(String Empfaenger) {
-        recipients.add(Empfaenger);
+    public void addRecipient(String Empfaenger, String GameName) {
+        Recipients R = new Recipients(Empfaenger, GameName);
+        recipients.add(R);
     }
 
     public void connectGames() {
@@ -234,6 +240,7 @@ public class DatabaseCon {
                     Map<String, Object> m = document.getData();
                     addGame(m.get("Name").toString(), (Number)m.get("Admin"));
                 }
+                connectRecipients();
             }
         });
     }
@@ -334,7 +341,7 @@ public class DatabaseCon {
         return user;
     }
 
-    public String getEmpfaenger(Integer i){
+    public Recipients getEmpfaenger(Integer i){
         if (i > recipients.size() - 1) {
             return null;
         }
