@@ -1,6 +1,7 @@
 package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -46,14 +47,27 @@ public class AccountOverviewActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_account_overview, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
             if (isSubFragment) {
                 navCon.navigate(R.id.action_SecondFragment_to_FirstFragment2);
                 fab.setVisibility(View.VISIBLE);
                 isSubFragment = false;
             } else
                 finish();
+        }
+        else if(id == R.id.action_settings)
+        {
+            //TODO: Add a popup to verify deletion of the account
+            //TODO: Delete account
+            System.out.println("Account deletion pressed");
         }
 
         return super.onOptionsItemSelected(item);
