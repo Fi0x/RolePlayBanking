@@ -8,6 +8,7 @@ import com.example.roleplaybanking.controllers.AccountSelectionActivity;
 import com.example.roleplaybanking.controllers.CreateNewActivity;
 import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
+import com.example.roleplaybanking.structures.Game;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -36,7 +37,7 @@ public class DatabaseCon {
     private final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Transaction> transactions = new ArrayList<>();
     private final ArrayList<String> recipients = new ArrayList<>();
-    private final ArrayList<String> games = new ArrayList<>();
+    private final ArrayList<Game> games = new ArrayList<>();
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
     private final CollectionReference ColUser = database.collection("Nutzer");
     private final CollectionReference ColAccount = database.collection("Konten");
@@ -121,7 +122,8 @@ public class DatabaseCon {
         m.put("Name", name);
         database.collection("Game").document(GameID.toString()).set(m);
         DocMenge.update("games", (long) GameID + 1);
-        games.add(name);
+        Game a = new Game(name, Admin);
+        games.add(a);
     }
 
     public void connect(AccountSelectionActivity activity, String Name, Number Id, String User, String UserPW) {
@@ -227,39 +229,47 @@ public class DatabaseCon {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    addGame(m.get("Name").toString());
+                    addGame(m.get("Name").toString(), (Number)m.get("Admin"));
                 }
             }
         });
     }
 
-    public void addGame(String name) {
-        games.add(name);
+    public void addGame(String name, Number AID) {
+        Game a = new Game(name, AID);
+        games.add(a);
     }
 
-    public void transferMoney(double Betrag, String Kontonamen, Number senderKontoID) {
+    public void transferMoney(double Betrag, String Kontonamen, Number senderKontoID, boolean FromAdmin) {
         ColAccount.whereEqualTo("Kontoname", Kontonamen).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d("TransferMoney", document.getData().toString());
                     Map<String, Object> m = document.getData();
-                    transferMoney(Betrag, (Number) m.get("KontoID"), senderKontoID);
+                    transferMoney(Betrag, (Number) m.get("KontoID"), senderKontoID, FromAdmin);
                 }
             }
         });
     }
 
-    public void transferMoney(double Betrag, Number KontoIDempfaenger, Number senderKontoID) {
+    public void transferMoney(double Betrag, Number KontoIDempfaenger, Number senderKontoID, boolean FromAdmin) {
         ColAccount.document(KontoIDempfaenger.toString()).update("Geld", FieldValue.increment(Betrag));
-        ColAccount.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1 * Betrag));
+        if(!FromAdmin){
+            ColAccount.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1 * Betrag));
+        }
     }
 
     public String getName() {
         return user.getName();
     }
 
-    public String getAdminName(String gameName) {
-        //TODO: Get the admin-name for a specific game from the DB
+    public Number getAdminName(String gameName) {
+        int i = 0;
+        while(i > games.size() - 1){
+            if(games.get(i).name == gameName){
+                return games.get(i).adminID;
+            }
+        }
         return null;
     }
 
@@ -314,7 +324,7 @@ public class DatabaseCon {
         if (i > games.size() - 1)
             return null;
 
-        return games.get(i);
+        return games.get(i).name;
     }
 
     public NutzerClass getUser() {
