@@ -31,6 +31,7 @@ public class AccountSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         adapter = new AccountsAdapter(accounts);
+        //TODO: Update the account list when an account gets deleted
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> openNewAccountCreation());

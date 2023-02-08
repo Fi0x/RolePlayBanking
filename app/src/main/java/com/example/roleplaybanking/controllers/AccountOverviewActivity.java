@@ -1,5 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -7,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
@@ -65,8 +67,18 @@ public class AccountOverviewActivity extends AppCompatActivity {
         }
         else if(id == R.id.action_settings)
         {
-            //TODO: Add a popup to verify deletion of the account
-            AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.name, Account.currentAccount.AccountID);
+            AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+            builder.setTitle("Warning!")
+                    .setMessage("Are you sure that you want to delete this account?")
+                    .setPositiveButton("Yes", (dialogInterface, i) ->
+                    {
+                        AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.name, Account.currentAccount.AccountID);
+                        finish();
+                    })
+                    .setNegativeButton("No", (dialogInterface, i) -> { });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
