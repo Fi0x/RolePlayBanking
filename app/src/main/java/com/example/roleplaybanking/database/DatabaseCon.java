@@ -268,7 +268,7 @@ public class DatabaseCon {
 
     public Number getAdminName(String gameName) {
 
-        for(int i = 0; i < games.size() - 1; i++){
+        for(int i = 0; i < games.size(); i++){
             if(games.get(i).name.equals(gameName)){
                 return games.get(i).adminID;
             }
@@ -362,15 +362,14 @@ public class DatabaseCon {
     public void deleteAccount(String gameName, Number accountId)
     {
         int i= 0;
-        for( i = 0; i > accounts.size()-1; i++){
-            //TODO: Make this work (For some reason the account is never found)
+        for( i = 0; i < accounts.size(); i++){
             if(accounts.get(i).AccountID.equals(accountId)){
                 Map<String, Object> m = new HashMap<>();
                 m.put("Game", accounts.get(i).gameName);
                 m.put("Geld", accounts.get(i).balance);
                 m.put("KontoID", accounts.get(i).AccountID);
                 m.put("Kontoname", accounts.get(i).name);
-                m.put("Nutzer", accountId);
+                m.put("Nutzer", user.getNutzerID());
                 database.collection("deletedKonten").document(accounts.get(i).AccountID.toString()).set(m);
                 accounts.remove(i);
                 break;

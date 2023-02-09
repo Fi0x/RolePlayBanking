@@ -72,7 +72,7 @@ public class AccountOverviewActivity extends AppCompatActivity {
                     .setMessage("Are you sure that you want to delete this account?")
                     .setPositiveButton("Yes", (dialogInterface, i) ->
                     {
-                        AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.name, Account.currentAccount.AccountID);
+                        AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.gameName, Account.currentAccount.AccountID);
                         finish();
                     })
                     .setNegativeButton("No", (dialogInterface, i) -> { });
