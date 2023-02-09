@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +18,7 @@ import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AccountOverviewFragment extends Fragment {
@@ -37,6 +37,7 @@ public class AccountOverviewFragment extends Fragment {
         DBc.orderTransactions();
         transactions.clear();
         transactions.addAll(Account.currentAccount.AccountHistory);
+        sortTransactions();
 
         System.out.println("CreateView updated with transaction count: " + transactions.size());
 
@@ -52,5 +53,10 @@ public class AccountOverviewFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void sortTransactions()
+    {
+        Collections.sort(transactions, (transaction, t1) -> t1.timestamp.compareTo(transaction.timestamp));
     }
 }
