@@ -27,19 +27,13 @@ public class AccountOverviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("CreateView called with transaction count: " + transactions.size());
         View view = inflater.inflate(R.layout.fragment_account_overview, container, false);
 
         TextView balance = view.findViewById(R.id.txt_balance);
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
 
-        DBc.orderTransactions();
-        transactions.clear();
-        transactions.addAll(Account.currentAccount.AccountHistory);
-        sortTransactions();
-
-        System.out.println("CreateView updated with transaction count: " + transactions.size());
+        loadTransactions();
 
         final RecyclerView rvTransactions = (RecyclerView) view.findViewById(R.id.rvTransactionHistory);
         rvTransactions.setAdapter(new TransactionsAdapter(transactions));
@@ -55,8 +49,12 @@ public class AccountOverviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void sortTransactions()
+    private void loadTransactions()
     {
+        DBc.orderTransactions();
+        transactions.clear();
+        transactions.addAll(Account.currentAccount.AccountHistory);
+
         Collections.sort(transactions, (transaction, t1) -> t1.timestamp.compareTo(transaction.timestamp));
     }
 }
