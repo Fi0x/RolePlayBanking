@@ -275,7 +275,7 @@ public class DatabaseCon {
 
     public Number getAdminName(String gameName) {
 
-        for(int i = 0; i < games.size() - 1; i++){
+        for(int i = 0; i < games.size(); i++){
             if(games.get(i).name.equals(gameName)){
                 return games.get(i).adminID;
             }
@@ -308,6 +308,10 @@ public class DatabaseCon {
             return null;
         }
         return accounts.get(i);
+    }
+    public ArrayList<Account> getAllAccounts()
+    {
+        return accounts;
     }
 
     @Nullable
@@ -360,6 +364,47 @@ public class DatabaseCon {
             generated = id;
 
         return generated;
+    }
+
+    public void deleteAccount(String gameName, Number accountId)
+    {
+        int i= 0;
+        for( i = 0; i < accounts.size(); i++){
+            if(accounts.get(i).AccountID.equals(accountId)){
+                Map<String, Object> m = new HashMap<>();
+                m.put("Game", accounts.get(i).gameName);
+                m.put("Geld", accounts.get(i).balance);
+                m.put("KontoID", accounts.get(i).AccountID);
+                m.put("Kontoname", accounts.get(i).name);
+                m.put("Nutzer", user.getNutzerID());
+                database.collection("deletedKonten").document(accounts.get(i).AccountID.toString()).set(m);
+                accounts.remove(i);
+                break;
+            }
+        }
+        ColAccount.document(accountId.toString()).delete();
+        ColAccount.whereEqualTo("Game", gameName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if(task.getResult()==null){
+                       database.collection("Game").whereEqualTo("Name", gameName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                           @Override
+                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                               if (task.isSuccessful()) {
+                                   for (QueryDocumentSnapshot document : task.getResult()) {
+                                       Number d = (Number)document.get("GameID");
+                                       database.collection("Game").document(d.toString()).delete();
+                                   }
+                               }
+                           }
+                       });
+                    }
+                }
+            }
+        });
     }
 
     private static class StringGenerator {

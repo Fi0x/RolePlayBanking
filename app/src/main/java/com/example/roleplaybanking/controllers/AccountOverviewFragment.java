@@ -20,6 +20,7 @@ import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AccountOverviewFragment extends Fragment {
@@ -34,8 +35,7 @@ public class AccountOverviewFragment extends Fragment {
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
 
-        DBc.orderTransactions();
-        updateTransactionList();
+        loadTransactions();
 
         final RecyclerView rvTransactions = (RecyclerView) view.findViewById(R.id.rvTransactionHistory);
         TransactionsAdapter adapter = new TransactionsAdapter(transactions);
@@ -58,9 +58,12 @@ public class AccountOverviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void updateTransactionList()
+    private void loadTransactions()
     {
+        DBc.orderTransactions();
         transactions.clear();
         transactions.addAll(Account.currentAccount.AccountHistory);
+
+        Collections.sort(transactions, (transaction, t1) -> t1.timestamp.compareTo(transaction.timestamp));
     }
 }
