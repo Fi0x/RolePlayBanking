@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +18,7 @@ import com.example.roleplaybanking.structures.Account;
 import com.example.roleplaybanking.structures.Transaction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AccountOverviewFragment extends Fragment {
@@ -27,18 +27,13 @@ public class AccountOverviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("CreateView called with transaction count: " + transactions.size());
         View view = inflater.inflate(R.layout.fragment_account_overview, container, false);
 
         TextView balance = view.findViewById(R.id.txt_balance);
         balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
 
-        DBc.orderTransactions();
-        transactions.clear();
-        transactions.addAll(Account.currentAccount.AccountHistory);
-
-        System.out.println("CreateView updated with transaction count: " + transactions.size());
+        loadTransactions();
 
         final RecyclerView rvTransactions = (RecyclerView) view.findViewById(R.id.rvTransactionHistory);
         rvTransactions.setAdapter(new TransactionsAdapter(transactions));
@@ -52,5 +47,14 @@ public class AccountOverviewFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void loadTransactions()
+    {
+        DBc.orderTransactions();
+        transactions.clear();
+        transactions.addAll(Account.currentAccount.AccountHistory);
+
+        Collections.sort(transactions, (transaction, t1) -> t1.timestamp.compareTo(transaction.timestamp));
     }
 }
