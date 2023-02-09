@@ -46,10 +46,8 @@ public class AccountSelectionActivity extends AppCompatActivity {
             Alreadyconnected = true;
         }
 
-        for (int i = 0; DBc.getAccount(i) != null; i++) {
-            this.addAccountToList(DBc.getAccount(i));
-            System.out.println("Account " + i + " added");
-        }
+        accounts.addAll(DBc.getAllAccounts());
+        adapter.notifyDataSetChanged();
 
         final RecyclerView rvContacts = findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(adapter);

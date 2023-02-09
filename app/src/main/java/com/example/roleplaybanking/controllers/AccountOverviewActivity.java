@@ -1,11 +1,14 @@
 package com.example.roleplaybanking.controllers;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
@@ -46,14 +49,36 @@ public class AccountOverviewActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_account_overview, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
             if (isSubFragment) {
                 navCon.navigate(R.id.action_SecondFragment_to_FirstFragment2);
                 fab.setVisibility(View.VISIBLE);
                 isSubFragment = false;
             } else
                 finish();
+        }
+        else if(id == R.id.action_settings)
+        {
+            AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+            builder.setTitle("Warning!")
+                    .setMessage("Are you sure that you want to delete this account?")
+                    .setPositiveButton("Yes", (dialogInterface, i) ->
+                    {
+                        AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.gameName, Account.currentAccount.AccountID);
+                        finish();
+                    })
+                    .setNegativeButton("No", (dialogInterface, i) -> { });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
