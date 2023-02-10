@@ -6,8 +6,8 @@ import java.util.Date;
 
 
 public class Transaction {
-    public String sender = "Nobody";
-    public String recipient = "Someone";
+    public String sender = "Defaultsender";
+    public String recipient = "Defaultempfanger";
     public double amount = 42;
     public Timestamp timestamp = new Timestamp(new Date(0));
     public String Notiz;

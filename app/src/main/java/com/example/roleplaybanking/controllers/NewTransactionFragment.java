@@ -70,6 +70,7 @@ public class NewTransactionFragment extends Fragment {
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
             if(DBc.getEmpfaenger(i).Name.contentEquals(Ename)){
                 found = true;
+                break;
             }
         }
 
@@ -96,9 +97,9 @@ public class NewTransactionFragment extends Fragment {
 
         Date date = Calendar.getInstance().getTime();
         Timestamp time = new Timestamp(date);
-        DBc.registerTransaction(amount, Ename, "", Account.currentAccount.name, time, Account.currentAccount);
+        DBc.registerTransaction(amount, DBc.getEmpfaenger(i).KontoID, "", Account.currentAccount.AccountID, time, Account.currentAccount);
 
-        DBc.transferMoney(amount, Ename, Account.currentAccount.AccountID, FromAdmin);
+        DBc.transferMoney(amount, DBc.getEmpfaenger(i).KontoID, Account.currentAccount.AccountID, FromAdmin);
         if(!FromAdmin){
             Account.currentAccount.balance -= amount;
         }
