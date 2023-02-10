@@ -2,7 +2,6 @@
 package com.example.roleplaybanking.database;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.example.roleplaybanking.controllers.AccountSelectionActivity;
 import com.example.roleplaybanking.controllers.CreateNewActivity;
