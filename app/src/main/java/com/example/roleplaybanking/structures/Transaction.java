@@ -11,15 +11,17 @@ public class Transaction {
     public double amount = 42;
     public Timestamp timestamp = new Timestamp(new Date(0));
     public String Notiz;
+    public Number TransactioID = -1;
 
     public Transaction() {
     }
 
-    public Transaction(String sender, String recipient, double amount, Timestamp Time, String Notiz) {
+    public Transaction(String sender, String recipient, double amount, Timestamp Time, String Notiz, Number TransactionID) {
         this.sender = sender;
         this.recipient = recipient;
         this.amount = amount;
         this.timestamp = Time;
         this.Notiz = Notiz;
+        this.TransactioID = TransactionID;
     }
 }

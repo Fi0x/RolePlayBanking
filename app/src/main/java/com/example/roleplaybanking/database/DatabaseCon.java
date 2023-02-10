@@ -109,7 +109,7 @@ public class DatabaseCon {
                 break;
             }
         }
-        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, (double) Betrag, time, Notiz);
+        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, (double) Betrag, time, Notiz, HistoryID);
         Map<String, Object> m = new HashMap<>();
         m.put("Betrag", Betrag);
         m.put("Empfaenger", Empfaenger);
@@ -151,9 +151,13 @@ public class DatabaseCon {
         } else {
             success = true;
         }
-        this.connectAccounts(activity);
-        this.connectRecipients();
         this.connectGames();
+        this.connectRecipients();
+        this.connectAccounts(activity);
+        int i;
+        for(i=0; i < accounts.size(); i++){
+            connectTransactions(accounts.get(i).AccountID);
+        }
     }
 
     public void connectUser(AccountSelectionActivity activity, SharedPreferences sharedPreferences) {
@@ -204,7 +208,7 @@ public class DatabaseCon {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"),  Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"),  Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"));
                 }
             }
         });
@@ -213,18 +217,23 @@ public class DatabaseCon {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d("ConnectTrans", document.getData().toString());
                     Map<String, Object> m = document.getData();
-                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"), Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"), Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"));
                 }
                 orderTransactions();
             }
         });
     }
 
-    public void addTransaction(Number sender, Number recipient, double amount, Timestamp Time, String notiz) {
+    public void addTransaction(Number sender, Number recipient, double amount, Timestamp Time, String notiz, Number HistoryID) {
+        int t;
+        for(t=0; t < transactions.size(); t++){
+            if(transactions.get(t).TransactioID.equals(HistoryID)){
+                return;
+            }
+        }
         int e;
         for(e=0; e < recipients.size(); e++){
             if(recipients.get(e).KontoID.equals(recipient)){
-                System.out.println(recipients.get(e).Name);
                 break;
             }
         }
@@ -234,7 +243,7 @@ public class DatabaseCon {
                 break;
             }
         }
-        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, amount, Time, notiz);
+        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, amount, Time, notiz, HistoryID);
         transactions.add(newTran);
     }
 
@@ -243,7 +252,7 @@ public class DatabaseCon {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    for(int i = 0; i < games.size() -1; i++){
+                    for(int i = 0; i < games.size(); i++){
                         if(games.get(i).name.contentEquals(m.get("Game").toString())){
                             addRecipient(m.get("Kontoname").toString(), m.get("Game").toString(), (Number)m.get("KontoID"));
                         }
