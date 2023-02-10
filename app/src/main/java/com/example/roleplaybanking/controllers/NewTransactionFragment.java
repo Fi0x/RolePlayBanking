@@ -40,7 +40,11 @@ public class NewTransactionFragment extends Fragment {
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
             //Log.d("onStart", DBc.getAccount(i).name);
-            recipientList.add(DBc.getEmpfaenger(i));
+            if(Account.currentAccount.gameName.contentEquals(DBc.getEmpfaenger(i).GameName)){
+                if(!recipientList.contains(DBc.getEmpfaenger(i).Name)){
+                    recipientList.add(DBc.getEmpfaenger(i).Name);
+                }
+            }
         }
 
         Button sendButton = view.findViewById(R.id.btnSend);
@@ -64,8 +68,9 @@ public class NewTransactionFragment extends Fragment {
         boolean found = false;
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            if(DBc.getEmpfaenger(i).contentEquals(Ename)){
+            if(DBc.getEmpfaenger(i).Name.contentEquals(Ename) && DBc.getEmpfaenger(i).GameName.contentEquals(Account.currentAccount.gameName)){
                 found = true;
+                break;
             }
         }
 
@@ -92,9 +97,9 @@ public class NewTransactionFragment extends Fragment {
 
         Date date = Calendar.getInstance().getTime();
         Timestamp time = new Timestamp(date);
-        DBc.registerTransaction(amount, Ename, "", Account.currentAccount.name, time, Account.currentAccount);
+        DBc.registerTransaction(amount, DBc.getEmpfaenger(i).KontoID, "", Account.currentAccount.AccountID, time, Account.currentAccount);
 
-        DBc.transferMoney(amount, Ename, Account.currentAccount.AccountID, FromAdmin);
+        DBc.transferMoney(amount, DBc.getEmpfaenger(i).KontoID, Account.currentAccount.AccountID, FromAdmin);
         if(!FromAdmin){
             Account.currentAccount.balance -= amount;
         }

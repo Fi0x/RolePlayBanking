@@ -1,6 +1,8 @@
 package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,19 +30,31 @@ public class AccountOverviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_overview, container, false);
-
-        TextView balance = view.findViewById(R.id.txt_balance);
-        balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
+        TextView balance = view.findViewById(R.id.txt_balance);
+        Number AID = DBc.getAdminName(Account.currentAccount.gameName);
+        if(Account.currentAccount.AccountID.equals(AID)){
+            balance.setText(String.format("Admin"));
+        }else{
+            balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
+        }
+
 
         loadTransactions();
 
         final RecyclerView rvTransactions = (RecyclerView) view.findViewById(R.id.rvTransactionHistory);
-        rvTransactions.setAdapter(new TransactionsAdapter(transactions));
+        TransactionsAdapter adapter = new TransactionsAdapter(transactions);
+        rvTransactions.setAdapter(adapter);
         rvTransactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         AccountOverviewActivity.fab.setVisibility(View.VISIBLE);
         AccountOverviewActivity.isSubFragment = false;
+
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            loadTransactions();
+            adapter.notifyDataSetChanged();
+        }, 1000);
 
         return view;
     }

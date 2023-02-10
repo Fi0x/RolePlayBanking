@@ -4,9 +4,11 @@ package com.example.roleplaybanking.database;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.controllers.AccountSelectionActivity;
 import com.example.roleplaybanking.controllers.CreateNewActivity;
 import com.example.roleplaybanking.structures.Account;
+import com.example.roleplaybanking.structures.Recipients;
 import com.example.roleplaybanking.structures.Transaction;
 import com.example.roleplaybanking.structures.Game;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +38,7 @@ public class DatabaseCon {
     private boolean success = false;
     private final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Transaction> transactions = new ArrayList<>();
-    private final ArrayList<String> recipients = new ArrayList<>();
+    private final ArrayList<Recipients> recipients = new ArrayList<>();
     private final ArrayList<Game> games = new ArrayList<>();
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
     private final CollectionReference ColUser = database.collection("Nutzer");
@@ -83,19 +85,32 @@ public class DatabaseCon {
         database.collection("Konten").document(KontoID.toString()).set(m);
         DocMenge.update("kontos", (long) KontoID + 1);
         accounts.add(newAcc);
-        recipients.add(Kontonamen);
+        Recipients R = new Recipients(Kontonamen, Game, KontoID);
+        recipients.add(R);
         success = true;
     }
 
-    public void registerTransaction(Number Betrag, String Empfaenger, String Notiz, String Nutzerkonto, Timestamp time, Account fromAcc) {
+    public void registerTransaction(Number Betrag, Number Empfaenger, String Notiz, Number Nutzerkonto, Timestamp time, Account fromAcc) {
         DocMenge.get().addOnSuccessListener(documentSnapshot -> {
             Map<String, Object> m = documentSnapshot.getData();
             registerTransaction(Betrag, Empfaenger, (long) m.get("historys"), Notiz, user.getNutzerID(), Nutzerkonto, time, fromAcc);
         });
     }
 
-    public void registerTransaction(Number Betrag, String Empfaenger, Number HistoryID, String Notiz, Number Nutzer, String Nutzerkonto, Timestamp time, Account fromAcc) {
-        Transaction newTran = new Transaction(Nutzerkonto, Empfaenger, (double) Betrag, time, Notiz);
+    public void registerTransaction(Number Betrag, Number Empfaenger, Number HistoryID, String Notiz, Number Nutzer, Number Nutzerkonto, Timestamp time, Account fromAcc) {
+        int e;
+        for(e=0; e < recipients.size(); e++){
+            if(recipients.get(e).KontoID.equals(Empfaenger)){
+                break;
+            }
+        }
+        int n;
+        for(n=0; n < recipients.size(); n++){
+            if(recipients.get(n).KontoID.equals(Nutzerkonto)){
+                break;
+            }
+        }
+        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, (double) Betrag, time, Notiz, HistoryID, fromAcc.gameName);
         Map<String, Object> m = new HashMap<>();
         m.put("Betrag", Betrag);
         m.put("Empfaenger", Empfaenger);
@@ -137,10 +152,8 @@ public class DatabaseCon {
         } else {
             success = true;
         }
-        this.connectAccounts(activity);
-        this.connectTransactions();
-        this.connectRecipients();
-        this.connectGames();
+        System.out.println("Start");
+        this.connectGames(activity);
     }
 
     public void connectUser(AccountSelectionActivity activity, SharedPreferences sharedPreferences) {
@@ -163,6 +176,7 @@ public class DatabaseCon {
         if (user == null)
             return;
 
+        System.out.println("Start Accounts");
         ColAccount.whereEqualTo("Nutzer", user.getNutzerID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             final AccountSelectionActivity act = activity;
 
@@ -172,6 +186,9 @@ public class DatabaseCon {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> m = document.getData();
                         addAccount(m.get("Game").toString(), m.get("Kontoname").toString(), Double.parseDouble(m.get("Geld").toString()), (Number) m.get("KontoID"));
+                        System.out.print(m.get("KontoID").toString());
+                        System.out.println("Start");
+                        connectTransactions((Number)m.get("KontoID"), m.get("Game").toString());
                     }
                     if (act != null)
                         act.notifyDBConnectionEstablished();
@@ -185,55 +202,86 @@ public class DatabaseCon {
         accounts.add(newAcc);
     }
 
-    public void connectTransactions() {
-        ColHistory.whereEqualTo("Nutzer", user.getNutzerID()).get().addOnCompleteListener(task -> {
+    public void connectTransactions(Number KontoID, String Gamename) {
+        ColHistory.whereEqualTo("Nutzerkonto", KontoID).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    addTransaction(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(),  Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"),  Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"), Gamename);
                 }
             }
         });
-        ColHistory.whereEqualTo("Empfaenger", user.getNutzerName()).get().addOnCompleteListener(task -> {
+        ColHistory.whereEqualTo("Empfaenger", KontoID).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d("ConnectTrans", document.getData().toString());
                     Map<String, Object> m = document.getData();
-                    addTransaction(m.get("Nutzerkonto").toString(), m.get("Empfaenger").toString(), Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString());
+                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"), Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"), Gamename);
                 }
                 orderTransactions();
             }
         });
     }
 
-    public void addTransaction(String sender, String recipient, double amount, Timestamp Time, String notiz) {
-        Transaction newTran = new Transaction(sender, recipient, amount, Time, notiz);
+    public void addTransaction(Number sender, Number recipient, double amount, Timestamp Time, String notiz, Number HistoryID, String Gamename) {
+        int t;
+        for(t=0; t < transactions.size(); t++){
+            if(transactions.get(t).TransactioID.equals(HistoryID)){
+                return;
+            }
+        }
+        String Empf = "DELETED";
+        String senders = "DELETED";
+        int e;
+        for(e=0; e < recipients.size(); e++){
+            if(recipients.get(e).KontoID.equals(recipient)){
+                Empf = recipients.get(e).Name;
+                break;
+            }
+        }
+        int n;
+        for(n=0; n < recipients.size(); n++){
+            if(recipients.get(n).KontoID.equals(sender)){
+                senders = recipients.get(n).Name;
+                break;
+            }
+        }
+        Transaction newTran = new Transaction(senders, Empf, amount, Time, notiz, HistoryID, Gamename);
         transactions.add(newTran);
     }
 
-    public void connectRecipients() {
+    public void connectRecipients(AccountSelectionActivity activity) {
         ColAccount.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                System.out.println("Start Recipients");
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    addRecipient(m.get("Kontoname").toString());
+                    for(int i = 0; i < games.size(); i++){
+                        if(games.get(i).name.contentEquals(m.get("Game").toString())){
+                            addRecipient(m.get("Kontoname").toString(), m.get("Game").toString(), (Number)m.get("KontoID"));
+                        }
+                    }
                 }
-
+                System.out.println("Finish Recipients");
+                connectAccounts(activity);
             }
         });
     }
 
-    public void addRecipient(String Empfaenger) {
-        recipients.add(Empfaenger);
+    public void addRecipient(String Empfaenger, String GameName, Number KontoID) {
+        Recipients R = new Recipients(Empfaenger, GameName, KontoID);
+        recipients.add(R);
     }
 
-    public void connectGames() {
+    public void connectGames(AccountSelectionActivity activity) {
         database.collection("Game").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
                     addGame(m.get("Name").toString(), (Number)m.get("Admin"));
                 }
+                System.out.println("Games Connnect Finish");
+                connectRecipients(activity);
             }
         });
     }
@@ -243,19 +291,19 @@ public class DatabaseCon {
         games.add(a);
     }
 
-    public void transferMoney(double Betrag, String Kontonamen, Number senderKontoID, boolean FromAdmin) {
-        ColAccount.whereEqualTo("Kontoname", Kontonamen).get().addOnCompleteListener(task -> {
+    public void transferMoney(double Betrag, Number KontoId, Number senderKontoID, boolean FromAdmin) {
+        ColAccount.whereEqualTo("KontoID", KontoId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d("TransferMoney", document.getData().toString());
                     Map<String, Object> m = document.getData();
-                    transferMoney(Betrag, (Number) m.get("KontoID"), senderKontoID, FromAdmin);
+                    transferMoneyOnComplete(Betrag, (Number) m.get("KontoID"), senderKontoID, FromAdmin);
                 }
             }
         });
     }
 
-    public void transferMoney(double Betrag, Number KontoIDempfaenger, Number senderKontoID, boolean FromAdmin) {
+    public void transferMoneyOnComplete(double Betrag, Number KontoIDempfaenger, Number senderKontoID, boolean FromAdmin) {
         ColAccount.document(KontoIDempfaenger.toString()).update("Geld", FieldValue.increment(Betrag));
         if(!FromAdmin){
             ColAccount.document(senderKontoID.toString()).update("Geld", FieldValue.increment(-1 * Betrag));
@@ -320,7 +368,7 @@ public class DatabaseCon {
         for (i = 0; this.getAccount(i) != null; i++) {
             accounts.get(i).AccountHistory.clear();
             for (j = 0; this.getTransaction(j) != null; j++) {
-                if (transactions.get(j).sender.contentEquals(accounts.get(i).name) || transactions.get(j).recipient.contentEquals(accounts.get(i).name)) {
+                if ((transactions.get(j).sender.contentEquals(accounts.get(i).name) || transactions.get(j).recipient.contentEquals(accounts.get(i).name)) && transactions.get(j).Game.equals(accounts.get(i).gameName)) {
                     accounts.get(i).AccountHistory.add(transactions.get(j));
                 }
             }
@@ -338,7 +386,7 @@ public class DatabaseCon {
         return user;
     }
 
-    public String getEmpfaenger(Integer i){
+    public Recipients getEmpfaenger(Integer i){
         if (i > recipients.size() - 1) {
             return null;
         }
@@ -381,7 +429,7 @@ public class DatabaseCon {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    if(task.getResult()==null){
+                    if(task.getResult().isEmpty()){
                        database.collection("Game").whereEqualTo("Name", gameName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
                            @Override
