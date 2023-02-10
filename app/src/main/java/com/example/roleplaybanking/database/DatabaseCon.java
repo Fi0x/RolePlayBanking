@@ -185,6 +185,8 @@ public class DatabaseCon {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> m = document.getData();
                         addAccount(m.get("Game").toString(), m.get("Kontoname").toString(), Double.parseDouble(m.get("Geld").toString()), (Number) m.get("KontoID"));
+                        System.out.print(m.get("KontoID").toString());
+                        System.out.println("Start");
                         connectTransactions((Number)m.get("KontoID"), m.get("Game").toString());
                     }
                     if (act != null)
@@ -227,19 +229,23 @@ public class DatabaseCon {
                 return;
             }
         }
+        String Empf = "DeletedAccount";
+        String senders = "DeletedAccount";
         int e;
         for(e=0; e < recipients.size(); e++){
             if(recipients.get(e).KontoID.equals(recipient)){
+                Empf = recipients.get(e).Name;
                 break;
             }
         }
         int n;
         for(n=0; n < recipients.size(); n++){
             if(recipients.get(n).KontoID.equals(sender)){
+                senders = recipients.get(n).Name;
                 break;
             }
         }
-        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, amount, Time, notiz, HistoryID, Gamename);
+        Transaction newTran = new Transaction(senders, Empf, amount, Time, notiz, HistoryID, Gamename);
         transactions.add(newTran);
     }
 
