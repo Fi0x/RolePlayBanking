@@ -68,7 +68,7 @@ public class NewTransactionFragment extends Fragment {
         boolean found = false;
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            if(DBc.getEmpfaenger(i).Name.contentEquals(Ename)){
+            if(DBc.getEmpfaenger(i).Name.contentEquals(Ename) && DBc.getEmpfaenger(i).GameName.contentEquals(Account.currentAccount.gameName)){
                 found = true;
                 break;
             }

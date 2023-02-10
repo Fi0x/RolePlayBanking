@@ -30,10 +30,11 @@ public class AccountOverviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_overview, container, false);
-
-        TextView balance = view.findViewById(R.id.txt_balance);
-        balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
         DBc = AccountSelectionActivity.DBc;
+        TextView balance = view.findViewById(R.id.txt_balance);
+
+        balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
+
 
         loadTransactions();
 

@@ -109,7 +109,7 @@ public class DatabaseCon {
                 break;
             }
         }
-        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, (double) Betrag, time, Notiz, HistoryID);
+        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, (double) Betrag, time, Notiz, HistoryID, fromAcc.gameName);
         Map<String, Object> m = new HashMap<>();
         m.put("Betrag", Betrag);
         m.put("Empfaenger", Empfaenger);
@@ -156,7 +156,7 @@ public class DatabaseCon {
         this.connectAccounts(activity);
         int i;
         for(i=0; i < accounts.size(); i++){
-            connectTransactions(accounts.get(i).AccountID);
+            connectTransactions(accounts.get(i).AccountID, accounts.get(i).gameName);
         }
     }
 
@@ -189,7 +189,7 @@ public class DatabaseCon {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> m = document.getData();
                         addAccount(m.get("Game").toString(), m.get("Kontoname").toString(), Double.parseDouble(m.get("Geld").toString()), (Number) m.get("KontoID"));
-                        connectTransactions((Number)m.get("KontoID"));
+                        connectTransactions((Number)m.get("KontoID"), m.get("Game").toString());
                     }
                     if (act != null)
                         act.notifyDBConnectionEstablished();
@@ -203,12 +203,12 @@ public class DatabaseCon {
         accounts.add(newAcc);
     }
 
-    public void connectTransactions(Number KontoID) {
+    public void connectTransactions(Number KontoID, String Gamename) {
         ColHistory.whereEqualTo("Nutzerkonto", KontoID).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"),  Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"));
+                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"),  Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"), Gamename);
                 }
             }
         });
@@ -217,14 +217,14 @@ public class DatabaseCon {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d("ConnectTrans", document.getData().toString());
                     Map<String, Object> m = document.getData();
-                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"), Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"));
+                    addTransaction((Number)m.get("Nutzerkonto"), (Number)m.get("Empfaenger"), Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number)m.get("HistoryID"), Gamename);
                 }
                 orderTransactions();
             }
         });
     }
 
-    public void addTransaction(Number sender, Number recipient, double amount, Timestamp Time, String notiz, Number HistoryID) {
+    public void addTransaction(Number sender, Number recipient, double amount, Timestamp Time, String notiz, Number HistoryID, String Gamename) {
         int t;
         for(t=0; t < transactions.size(); t++){
             if(transactions.get(t).TransactioID.equals(HistoryID)){
@@ -243,7 +243,7 @@ public class DatabaseCon {
                 break;
             }
         }
-        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, amount, Time, notiz, HistoryID);
+        Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, amount, Time, notiz, HistoryID, Gamename);
         transactions.add(newTran);
     }
 
