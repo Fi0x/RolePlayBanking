@@ -231,12 +231,9 @@ public class DatabaseCon {
         int n;
         for(n=0; n < recipients.size(); n++){
             if(recipients.get(n).KontoID.equals(sender)){
-                System.out.println(recipients.get(n).Name);
                 break;
             }
         }
-        System.out.println(recipients.get(n).Name);
-        System.out.println(recipients.get(e).Name);
         Transaction newTran = new Transaction(recipients.get(n).Name, recipients.get(e).Name, amount, Time, notiz);
         transactions.add(newTran);
     }
@@ -355,7 +352,7 @@ public class DatabaseCon {
         for (i = 0; this.getAccount(i) != null; i++) {
             accounts.get(i).AccountHistory.clear();
             for (j = 0; this.getTransaction(j) != null; j++) {
-                if (transactions.get(j).sender.equals(accounts.get(i).AccountID) || transactions.get(j).recipient.equals(accounts.get(i).AccountID)) {
+                if (transactions.get(j).sender.contentEquals(accounts.get(i).name) || transactions.get(j).recipient.contentEquals(accounts.get(i).name)) {
                     accounts.get(i).AccountHistory.add(transactions.get(j));
                 }
             }
