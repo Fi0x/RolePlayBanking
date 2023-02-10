@@ -36,7 +36,7 @@ public class DatabaseCon {
     private NutzerClass user;
     private String PW;
     private boolean success = false;
-    private final ArrayList<Account> accounts = new ArrayList<>();
+    public final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Transaction> transactions = new ArrayList<>();
     private final ArrayList<Recipients> recipients = new ArrayList<>();
     private final ArrayList<Game> games = new ArrayList<>();

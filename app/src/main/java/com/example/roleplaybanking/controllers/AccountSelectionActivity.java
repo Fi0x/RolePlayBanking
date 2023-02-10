@@ -45,6 +45,12 @@ public class AccountSelectionActivity extends AppCompatActivity {
             DBc.connectUser(this, getSharedPreferences("LoginFile", Context.MODE_PRIVATE));
             Alreadyconnected = true;
         }
+        else
+        {
+            DBc.accounts.clear();
+            DBc.connectAccounts(this);
+        }
+        System.out.println("Test on Start");
 
         accounts.addAll(DBc.getAllAccounts());
         adapter.notifyDataSetChanged();
@@ -52,6 +58,12 @@ public class AccountSelectionActivity extends AppCompatActivity {
         final RecyclerView rvContacts = findViewById(R.id.rvTransactionHistory);
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected void onResume() {
+        System.out.println("Test on Resume");
+        super.onResume();
     }
 
     public void notifyDBConnectionEstablished() {
