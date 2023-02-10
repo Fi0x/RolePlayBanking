@@ -4,6 +4,7 @@ package com.example.roleplaybanking.database;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.roleplaybanking.R;
 import com.example.roleplaybanking.controllers.AccountSelectionActivity;
 import com.example.roleplaybanking.controllers.CreateNewActivity;
 import com.example.roleplaybanking.structures.Account;
@@ -229,8 +230,8 @@ public class DatabaseCon {
                 return;
             }
         }
-        String Empf = "DeletedAccount";
-        String senders = "DeletedAccount";
+        String Empf = "DELETED";
+        String senders = "DELETED";
         int e;
         for(e=0; e < recipients.size(); e++){
             if(recipients.get(e).KontoID.equals(recipient)){
