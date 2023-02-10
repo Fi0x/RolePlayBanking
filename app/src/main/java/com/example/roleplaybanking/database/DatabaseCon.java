@@ -206,7 +206,6 @@ public class DatabaseCon {
         ColHistory.whereEqualTo("Empfaenger", KontoID).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("ConnectTrans", document.getData().toString());
                     Map<String, Object> m = document.getData();
                     addTransaction((Number) m.get("Nutzerkonto"), (Number) m.get("Empfaenger"), Double.parseDouble(m.get("Betrag").toString()), (Timestamp) m.get("SendeZeit"), m.get("Notiz").toString(), (Number) m.get("HistoryID"), Gamename);
                 }
@@ -282,7 +281,6 @@ public class DatabaseCon {
         ColAccount.whereEqualTo("KontoID", KontoId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("TransferMoney", document.getData().toString());
                     Map<String, Object> m = document.getData();
                     transferMoneyOnComplete(Betrag, (Number) m.get("KontoID"), senderKontoID, FromAdmin);
                 }
