@@ -87,7 +87,7 @@ public class CreateNewActivity extends AppCompatActivity {
         int i;
         boolean Gameexist = false;
         for (i = 0; DBc.getGame(i) != null; i++) {
-            if (DBc.getGame(i).contentEquals(gameName)) {
+            if (DBc.getGame(i).name.contentEquals(gameName)) {
                 Gameexist = true;
             }
         }
@@ -112,9 +112,17 @@ public class CreateNewActivity extends AppCompatActivity {
         }
 
         if (cbIsNew.isChecked()) {
-            AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName, true);
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName, true, balance);
         } else {
-            AccountSelectionActivity.DBc.registerAccount(this, gameName, 0, accountName, false);
+            double Geld = 0;
+            int g;
+            for(g=0;DBc.getGame(g) != null; g++){
+                if(DBc.getGame(g).name.contentEquals(gameName)){
+                    Geld = DBc.getGame(g).defaultBalance;
+                    break;
+                }
+            }
+            AccountSelectionActivity.DBc.registerAccount(this, gameName, Geld, accountName, false, balance);
         }
     }
 
