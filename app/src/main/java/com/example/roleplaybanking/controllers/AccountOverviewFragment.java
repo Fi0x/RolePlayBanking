@@ -32,8 +32,12 @@ public class AccountOverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account_overview, container, false);
         DBc = AccountSelectionActivity.DBc;
         TextView balance = view.findViewById(R.id.txt_balance);
-
-        balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
+        Number AID = DBc.getAdminName(Account.currentAccount.gameName);
+        if(Account.currentAccount.AccountID.equals(AID)){
+            balance.setText(String.format("Admin"));
+        }else{
+            balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
+        }
 
 
         loadTransactions();

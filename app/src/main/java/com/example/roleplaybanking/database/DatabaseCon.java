@@ -151,13 +151,8 @@ public class DatabaseCon {
         } else {
             success = true;
         }
-        this.connectGames();
-        this.connectRecipients();
-        this.connectAccounts(activity);
-        int i;
-        for(i=0; i < accounts.size(); i++){
-            connectTransactions(accounts.get(i).AccountID, accounts.get(i).gameName);
-        }
+        System.out.println("Start");
+        this.connectGames(activity);
     }
 
     public void connectUser(AccountSelectionActivity activity, SharedPreferences sharedPreferences) {
@@ -180,6 +175,7 @@ public class DatabaseCon {
         if (user == null)
             return;
 
+        System.out.println("Start Accounts");
         ColAccount.whereEqualTo("Nutzer", user.getNutzerID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             final AccountSelectionActivity act = activity;
 
@@ -247,9 +243,10 @@ public class DatabaseCon {
         transactions.add(newTran);
     }
 
-    public void connectRecipients() {
+    public void connectRecipients(AccountSelectionActivity activity) {
         ColAccount.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                System.out.println("Start Recipients");
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
                     for(int i = 0; i < games.size(); i++){
@@ -258,6 +255,8 @@ public class DatabaseCon {
                         }
                     }
                 }
+                System.out.println("Finish Recipients");
+                connectAccounts(activity);
             }
         });
     }
@@ -267,14 +266,15 @@ public class DatabaseCon {
         recipients.add(R);
     }
 
-    public void connectGames() {
+    public void connectGames(AccountSelectionActivity activity) {
         database.collection("Game").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
                     addGame(m.get("Name").toString(), (Number)m.get("Admin"));
                 }
-                connectRecipients();
+                System.out.println("Games Connnect Finish");
+                connectRecipients(activity);
             }
         });
     }
@@ -361,7 +361,7 @@ public class DatabaseCon {
         for (i = 0; this.getAccount(i) != null; i++) {
             accounts.get(i).AccountHistory.clear();
             for (j = 0; this.getTransaction(j) != null; j++) {
-                if (transactions.get(j).sender.contentEquals(accounts.get(i).name) || transactions.get(j).recipient.contentEquals(accounts.get(i).name)) {
+                if ((transactions.get(j).sender.contentEquals(accounts.get(i).name) || transactions.get(j).recipient.contentEquals(accounts.get(i).name)) && transactions.get(j).Game.equals(accounts.get(i).gameName)) {
                     accounts.get(i).AccountHistory.add(transactions.get(j));
                 }
             }
