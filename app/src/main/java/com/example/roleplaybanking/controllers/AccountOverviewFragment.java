@@ -47,7 +47,7 @@ public class AccountOverviewFragment extends Fragment {
 
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
-            updateTransactionList();
+            loadTransactions();
             adapter.notifyDataSetChanged();
         }, 1000);
 
