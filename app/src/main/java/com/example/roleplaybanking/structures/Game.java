@@ -8,8 +8,9 @@ public class Game {
     public Game() {
     }
 
-    public Game(String Name, Number AID) {
+    public Game(String Name, Number AID, double dbalance) {
         this.name = Name;
         this.adminID = AID;
+        this.defaultBalance = dbalance;
     }
 }

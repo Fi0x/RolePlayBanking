@@ -36,7 +36,7 @@ public class DatabaseCon {
     private NutzerClass user;
     private String PW;
     private boolean success = false;
-    private final ArrayList<Account> accounts = new ArrayList<>();
+    public final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Transaction> transactions = new ArrayList<>();
     private final ArrayList<Recipients> recipients = new ArrayList<>();
     private final ArrayList<Game> games = new ArrayList<>();
@@ -62,11 +62,11 @@ public class DatabaseCon {
         success = true;
     }
 
-    public void registerAccount(CreateNewActivity act, String Game, Number Geld, String Kontonamen, boolean isnewGame) {
+    public void registerAccount(CreateNewActivity act, String Game, Number Geld, String Kontonamen, boolean isnewGame, double dbalance) {
         DocMenge.get().addOnSuccessListener(documentSnapshot -> {
             Map<String, Object> m = documentSnapshot.getData();
             if(isnewGame){
-                registerGame(Game, (Number)m.get("kontos"));
+                registerGame(Game, (Number)m.get("kontos"), dbalance);
             }
             registerAccount(Game, Geld, (long) m.get("kontos"), Kontonamen, user.getNutzerID());
             if (act != null)
@@ -126,21 +126,22 @@ public class DatabaseCon {
         success = true;
     }
 
-    public void registerGame(String name, Number Admin) {
+    public void registerGame(String name, Number Admin, double dbalance) {
         DocMenge.get().addOnSuccessListener(documentSnapshot -> {
             Map<String, Object> m = documentSnapshot.getData();
-            registerGame(name, Admin, (long) m.get("games"));
+            registerGame(name, Admin, (long) m.get("games"), dbalance);
         });
     }
 
-    public void registerGame(String name, Number Admin, Number GameID) {
+    public void registerGame(String name, Number Admin, Number GameID, double dbalance) {
         Map<String, Object> m = new HashMap<>();
         m.put("Admin", Admin);
         m.put("GameID", GameID);
         m.put("Name", name);
+        m.put("DefaultBalance", dbalance);
         database.collection("Game").document(GameID.toString()).set(m);
         DocMenge.update("games", (long) GameID + 1);
-        Game a = new Game(name, Admin);
+        Game a = new Game(name, Admin, dbalance);
         games.add(a);
     }
 
@@ -278,7 +279,7 @@ public class DatabaseCon {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> m = document.getData();
-                    addGame(m.get("Name").toString(), (Number)m.get("Admin"));
+                    addGame(m.get("Name").toString(), (Number)m.get("Admin"), Double.parseDouble(m.get("DefaultBalance").toString()));
                 }
                 System.out.println("Games Connnect Finish");
                 connectRecipients(activity);
@@ -286,8 +287,8 @@ public class DatabaseCon {
         });
     }
 
-    public void addGame(String name, Number AID) {
-        Game a = new Game(name, AID);
+    public void addGame(String name, Number AID, double dbalance) {
+        Game a = new Game(name, AID, dbalance);
         games.add(a);
     }
 
@@ -375,11 +376,11 @@ public class DatabaseCon {
         }
     }
 
-    public String getGame(Integer i) {
+    public Game getGame(Integer i) {
         if (i > games.size() - 1)
             return null;
 
-        return games.get(i).name;
+        return games.get(i);
     }
 
     public NutzerClass getUser() {
