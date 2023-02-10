@@ -21,13 +21,5 @@ public class Account {
         this.balance = balance;
         this.AccountID = AccountID;
     }
-
-    public Transaction getHistory(Integer i) {
-        if (i > AccountHistory.size() - 1) {
-            return null;
-        }
-        return AccountHistory.get(i);
-    }
-
 }
 

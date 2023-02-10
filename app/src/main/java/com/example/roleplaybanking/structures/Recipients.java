@@ -5,11 +5,7 @@ public class Recipients {
     public String GameName;
     public Number KontoID;
 
-    public Recipients(){
-
-    }
-
-    public Recipients(String Name, String GameName, Number ID){
+    public Recipients(String Name, String GameName, Number ID) {
         this.Name = Name;
         this.GameName = GameName;
         this.KontoID = ID;

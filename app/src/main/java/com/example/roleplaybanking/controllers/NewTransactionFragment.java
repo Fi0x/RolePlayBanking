@@ -1,7 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class NewTransactionFragment extends Fragment {
-    private ArrayList<String> recipientList = new ArrayList<>();
+    private final ArrayList<String> recipientList = new ArrayList<>();
     public DatabaseCon DBc;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_transaction, container, false);
@@ -37,13 +37,10 @@ public class NewTransactionFragment extends Fragment {
         txtBalance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
 
         DBc = AccountSelectionActivity.DBc;
-        int i;
-        for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            //Log.d("onStart", DBc.getAccount(i).name);
-            if(Account.currentAccount.gameName.contentEquals(DBc.getEmpfaenger(i).GameName)){
-                if(!recipientList.contains(DBc.getEmpfaenger(i).Name)){
+        for (int i = 0; DBc.getEmpfaenger(i) != null; i++) {
+            if (Account.currentAccount.gameName.contentEquals(DBc.getEmpfaenger(i).GameName)) {
+                if (!recipientList.contains(DBc.getEmpfaenger(i).Name))
                     recipientList.add(DBc.getEmpfaenger(i).Name);
-                }
             }
         }
 
@@ -51,7 +48,7 @@ public class NewTransactionFragment extends Fragment {
         sendButton.setOnClickListener(view1 -> sendTransaction(view));
 
         AutoCompleteTextView txtAutoComplete = view.findViewById(R.id.txtRecipientAutoComplete);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, recipientList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, recipientList);
         txtAutoComplete.setAdapter(adapter);
 
         return view;
@@ -61,21 +58,21 @@ public class NewTransactionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void sendTransaction(View view)
-    {
+    private void sendTransaction(View view) {
         AutoCompleteTextView txtAutoComplete = view.findViewById(R.id.txtRecipientAutoComplete);
         String Ename = txtAutoComplete.getText().toString();
+
         boolean found = false;
         int i;
         for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            if(DBc.getEmpfaenger(i).Name.contentEquals(Ename) && DBc.getEmpfaenger(i).GameName.contentEquals(Account.currentAccount.gameName)){
+            if (DBc.getEmpfaenger(i).Name.contentEquals(Ename) && DBc.getEmpfaenger(i).GameName.contentEquals(Account.currentAccount.gameName)) {
                 found = true;
                 break;
             }
         }
 
-        if(!found){
-            Snackbar.make(view, "Empfaenger not found", Snackbar.LENGTH_LONG).show();
+        if (!found) {
+            Snackbar.make(view, getString(R.string.recipient_not_found_error), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -100,9 +97,8 @@ public class NewTransactionFragment extends Fragment {
         DBc.registerTransaction(amount, DBc.getEmpfaenger(i).KontoID, "", Account.currentAccount.AccountID, time, Account.currentAccount);
 
         DBc.transferMoney(amount, DBc.getEmpfaenger(i).KontoID, Account.currentAccount.AccountID, FromAdmin);
-        if(!FromAdmin){
+        if (!FromAdmin)
             Account.currentAccount.balance -= amount;
-        }
 
         NavController nc = Navigation.findNavController(view);
         nc.navigate(R.id.action_SecondFragment_to_FirstFragment2);

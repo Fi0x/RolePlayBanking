@@ -44,13 +44,10 @@ public class AccountSelectionActivity extends AppCompatActivity {
         if (!(Alreadyconnected)) {
             DBc.connectUser(this, getSharedPreferences("LoginFile", Context.MODE_PRIVATE));
             Alreadyconnected = true;
-        }
-        else
-        {
+        } else {
             DBc.accounts.clear();
             DBc.connectAccounts(this);
         }
-        System.out.println("Test on Start");
 
         accounts.addAll(DBc.getAllAccounts());
         adapter.notifyDataSetChanged();
@@ -60,19 +57,10 @@ public class AccountSelectionActivity extends AppCompatActivity {
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    @Override
-    protected void onResume() {
-        System.out.println("Test on Resume");
-        super.onResume();
-    }
-
     public void notifyDBConnectionEstablished() {
         accounts.clear();
-        int i;
-        for (i = 0; DBc.getAccount(i) != null; i++) {
+        for (int i = 0; DBc.getAccount(i) != null; i++)
             this.addAccountToList(DBc.getAccount(i));
-            System.out.println("Account " + i + " added again?");
-        }
     }
 
     public void addAccountToList(Account account) {

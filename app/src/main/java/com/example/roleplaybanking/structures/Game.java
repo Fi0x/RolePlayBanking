@@ -5,9 +5,6 @@ public class Game {
     public Number adminID;
     public double defaultBalance;
 
-    public Game() {
-    }
-
     public Game(String Name, Number AID, double dbalance) {
         this.name = Name;
         this.adminID = AID;

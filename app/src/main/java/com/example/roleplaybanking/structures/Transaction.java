@@ -2,20 +2,14 @@ package com.example.roleplaybanking.structures;
 
 import com.google.firebase.Timestamp;
 
-import java.util.Date;
-
-
 public class Transaction {
-    public String sender = "Defaultsender";
-    public String recipient = "Defaultempfanger";
-    public String Game = "DeafaultGame";
-    public double amount = 42;
-    public Timestamp timestamp = new Timestamp(new Date(0));
+    public String sender;
+    public String recipient;
+    public String Game;
+    public double amount;
+    public Timestamp timestamp;
     public String Notiz;
-    public Number TransactioID = -1;
-
-    public Transaction() {
-    }
+    public Number TransactioID;
 
     public Transaction(String sender, String recipient, double amount, Timestamp Time, String Notiz, Number TransactionID, String Game) {
         this.sender = sender;

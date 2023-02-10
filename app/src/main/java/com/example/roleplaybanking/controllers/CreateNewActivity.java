@@ -1,9 +1,6 @@
 package com.example.roleplaybanking.controllers;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.roleplaybanking.database.DatabaseCon;
 import com.example.roleplaybanking.R;
-import com.example.roleplaybanking.structures.Account;
-import com.example.roleplaybanking.structures.Game;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,6 +26,7 @@ public class CreateNewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Add new Account");
         setSupportActionBar(toolbar);
@@ -49,9 +45,8 @@ public class CreateNewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home)
             finish();
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -61,6 +56,7 @@ public class CreateNewActivity extends AppCompatActivity {
         TextInputEditText txtAccountName = findViewById(R.id.txInAccountName);
         TextInputEditText txtDefaultBalance = findViewById(R.id.txInDefaultBalance);
         CheckBox cbIsNew = findViewById(R.id.cbIsNewGame);
+
         DBc = AccountSelectionActivity.DBc;
 
         String gameName = txtGameName.getText().toString();
@@ -84,12 +80,10 @@ public class CreateNewActivity extends AppCompatActivity {
         }
 
 
-        int i;
         boolean Gameexist = false;
-        for (i = 0; DBc.getGame(i) != null; i++) {
-            if (DBc.getGame(i).name.contentEquals(gameName)) {
+        for (int i = 0; DBc.getGame(i) != null; i++) {
+            if (DBc.getGame(i).name.contentEquals(gameName))
                 Gameexist = true;
-            }
         }
 
         if (cbIsNew.isChecked()) {
@@ -102,8 +96,6 @@ public class CreateNewActivity extends AppCompatActivity {
                 return;
             }
 
-            //AccountSelectionActivity.DBc.registerGame(gameName, DBc.getNutzerID());
-
         } else {
             if (!(Gameexist)) {
                 Snackbar.make(view, gameName + getString(R.string.error_account_game_not_found), Snackbar.LENGTH_LONG).show();
@@ -111,13 +103,12 @@ public class CreateNewActivity extends AppCompatActivity {
             }
         }
 
-        if (cbIsNew.isChecked()) {
+        if (cbIsNew.isChecked())
             AccountSelectionActivity.DBc.registerAccount(this, gameName, balance, accountName, true, balance);
-        } else {
+        else {
             double Geld = 0;
-            int g;
-            for(g=0;DBc.getGame(g) != null; g++){
-                if(DBc.getGame(g).name.contentEquals(gameName)){
+            for (int g = 0; DBc.getGame(g) != null; g++) {
+                if (DBc.getGame(g).name.contentEquals(gameName)) {
                     Geld = DBc.getGame(g).defaultBalance;
                     break;
                 }

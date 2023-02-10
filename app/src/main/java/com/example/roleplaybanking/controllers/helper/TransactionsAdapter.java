@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roleplaybanking.R;
@@ -22,13 +23,13 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         transactionList = transactions;
     }
 
+    @NonNull
     @Override
     public TransactionsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View transactionView = inflater.inflate(R.layout.item_transaction, parent, false);
-
         return new ViewHolder(transactionView);
     }
 

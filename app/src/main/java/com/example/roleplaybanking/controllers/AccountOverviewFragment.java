@@ -30,15 +30,15 @@ public class AccountOverviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_overview, container, false);
+
         DBc = AccountSelectionActivity.DBc;
+
         TextView balance = view.findViewById(R.id.txt_balance);
         Number AID = DBc.getAdminName(Account.currentAccount.gameName);
-        if(Account.currentAccount.AccountID.equals(AID)){
-            balance.setText(String.format("Admin"));
-        }else{
+        if (Account.currentAccount.AccountID.equals(AID))
+            balance.setText(R.string.balance_for_admins);
+        else
             balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
-        }
-
 
         loadTransactions();
 
@@ -63,8 +63,7 @@ public class AccountOverviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void loadTransactions()
-    {
+    private void loadTransactions() {
         DBc.orderTransactions();
         transactions.clear();
         transactions.addAll(Account.currentAccount.AccountHistory);

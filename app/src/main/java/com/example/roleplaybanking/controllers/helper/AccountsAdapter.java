@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roleplaybanking.R;
@@ -23,13 +24,13 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.ViewHo
         mAccounts = accounts;
     }
 
+    @NonNull
     @Override
     public AccountsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View accountView = inflater.inflate(R.layout.item_account, parent, false);
-
         return new ViewHolder(accountView);
     }
 

@@ -34,4 +34,6 @@
     <string name="error_account_balance_null">Default-Balance must not be empty</string>
     <string name="error_account_game_not_found">does not exist as a game</string>
     <string name="delete_account">Delete Account</string>
+    <string name="recipient_not_found_error">Empfaenger not found</string>
+    <string name="balance_for_admins">Admin</string>
 </resources>

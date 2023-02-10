@@ -1,6 +1,5 @@
 package com.example.roleplaybanking.controllers;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,9 +63,7 @@ public class AccountOverviewActivity extends AppCompatActivity {
                 isSubFragment = false;
             } else
                 finish();
-        }
-        else if(id == R.id.action_settings)
-        {
+        } else if (id == R.id.action_settings) {
             AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
             builder.setTitle("Warning!")
                     .setMessage("Are you sure that you want to delete this account?")
@@ -75,7 +72,8 @@ public class AccountOverviewActivity extends AppCompatActivity {
                         AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.gameName, Account.currentAccount.AccountID);
                         finish();
                     })
-                    .setNegativeButton("No", (dialogInterface, i) -> { });
+                    .setNegativeButton("No", (dialogInterface, i) -> {
+                    });
 
             AlertDialog dialog = builder.create();
             dialog.show();
