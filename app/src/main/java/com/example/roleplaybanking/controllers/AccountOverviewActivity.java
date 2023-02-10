@@ -65,14 +65,14 @@ public class AccountOverviewActivity extends AppCompatActivity {
                 finish();
         } else if (id == R.id.action_settings) {
             AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-            builder.setTitle("Warning!")
-                    .setMessage("Are you sure that you want to delete this account?")
-                    .setPositiveButton("Yes", (dialogInterface, i) ->
+            builder.setTitle(getString(R.string.warning_title))
+                    .setMessage(getString(R.string.warning_text))
+                    .setPositiveButton(getString(R.string.yes), (dialogInterface, i) ->
                     {
                         AccountSelectionActivity.DBc.deleteAccount(Account.currentAccount.gameName, Account.currentAccount.AccountID);
                         finish();
                     })
-                    .setNegativeButton("No", (dialogInterface, i) -> {
+                    .setNegativeButton(getString(R.string.no), (dialogInterface, i) -> {
                     });
 
             AlertDialog dialog = builder.create();

@@ -36,4 +36,9 @@
     <string name="delete_account">Delete Account</string>
     <string name="recipient_not_found_error">Empfaenger not found</string>
     <string name="balance_for_admins">Admin</string>
+    <string name="warning_title">Warning!</string>
+    <string name="warning_text">Are you sure that you want to delete this account?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="new_account_title">Add new Account</string>
 </resources>

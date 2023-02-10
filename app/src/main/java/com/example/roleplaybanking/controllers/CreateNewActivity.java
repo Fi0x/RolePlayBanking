@@ -28,7 +28,7 @@ public class CreateNewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_new);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Add new Account");
+        toolbar.setTitle(getString(R.string.new_account_title));
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
