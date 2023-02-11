@@ -53,7 +53,12 @@ public class DatabaseCon {
 
     public void registerUser(String name, Number id, String user, String userPW) {
         com.example.roleplaybanking.database.User newUser = new User(name, id, userPW);
-        DATABASE.collection("Nutzer").document(user).set(newUser);
+        Map<String, Object> m = new HashMap<>();
+        m.put("name", newUser.getName());
+        m.put("nutzerID", newUser.getUserID());
+        m.put("nutzerName", newUser.getName());
+        m.put("nutzerPW", newUser.getUserPW());
+        DATABASE.collection("Nutzer").document(user).set(m);
         DOC_AMOUNT.update("nutzer", (long) id + 1);
         this.user = newUser;
     }
