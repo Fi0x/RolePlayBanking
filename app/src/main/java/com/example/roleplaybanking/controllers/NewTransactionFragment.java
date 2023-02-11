@@ -37,10 +37,10 @@ public class NewTransactionFragment extends Fragment {
         txtBalance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
 
         DBc = AccountSelectionActivity.DBc;
-        for (int i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            if (Account.currentAccount.gameName.contentEquals(DBc.getEmpfaenger(i).GameName)) {
-                if (!recipientList.contains(DBc.getEmpfaenger(i).Name))
-                    recipientList.add(DBc.getEmpfaenger(i).Name);
+        for (int i = 0; DBc.getRecipient(i) != null; i++) {
+            if (Account.currentAccount.gameName.contentEquals(DBc.getRecipient(i).gameName)) {
+                if (!recipientList.contains(DBc.getRecipient(i).name))
+                    recipientList.add(DBc.getRecipient(i).name);
             }
         }
 
@@ -60,12 +60,12 @@ public class NewTransactionFragment extends Fragment {
 
     private void sendTransaction(View view) {
         AutoCompleteTextView txtAutoComplete = view.findViewById(R.id.txtRecipientAutoComplete);
-        String Ename = txtAutoComplete.getText().toString();
+        String recipientName = txtAutoComplete.getText().toString();
 
         boolean found = false;
         int i;
-        for (i = 0; DBc.getEmpfaenger(i) != null; i++) {
-            if (DBc.getEmpfaenger(i).Name.contentEquals(Ename) && DBc.getEmpfaenger(i).GameName.contentEquals(Account.currentAccount.gameName)) {
+        for (i = 0; DBc.getRecipient(i) != null; i++) {
+            if (DBc.getRecipient(i).name.contentEquals(recipientName) && DBc.getRecipient(i).gameName.contentEquals(Account.currentAccount.gameName)) {
                 found = true;
                 break;
             }
@@ -85,8 +85,8 @@ public class NewTransactionFragment extends Fragment {
         }
 
         double amount = Double.parseDouble(amountString);
-        Number AID = DBc.getAdminName(Account.currentAccount.gameName);
-        boolean FromAdmin = Account.currentAccount.AccountID.equals(AID);
+        Number adminID = DBc.getAdminName(Account.currentAccount.gameName);
+        boolean FromAdmin = Account.currentAccount.accountID.equals(adminID);
         if (!FromAdmin && (amount <= 0 || amount > Account.currentAccount.balance)) {
             Snackbar.make(view, getString(R.string.error_transaction_amount_invalid), Snackbar.LENGTH_LONG).show();
             return;
@@ -94,9 +94,9 @@ public class NewTransactionFragment extends Fragment {
 
         Date date = Calendar.getInstance().getTime();
         Timestamp time = new Timestamp(date);
-        DBc.registerTransaction(amount, DBc.getEmpfaenger(i).KontoID, "", Account.currentAccount.AccountID, time, Account.currentAccount);
+        DBc.registerTransaction(amount, DBc.getRecipient(i).accountID, "", Account.currentAccount.accountID, time, Account.currentAccount);
 
-        DBc.transferMoney(amount, DBc.getEmpfaenger(i).KontoID, Account.currentAccount.AccountID, FromAdmin);
+        DBc.transferMoney(amount, DBc.getRecipient(i).accountID, Account.currentAccount.accountID, FromAdmin);
         if (!FromAdmin)
             Account.currentAccount.balance -= amount;
 

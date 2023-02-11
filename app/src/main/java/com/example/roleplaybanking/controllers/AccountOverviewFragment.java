@@ -34,8 +34,8 @@ public class AccountOverviewFragment extends Fragment {
         DBc = AccountSelectionActivity.DBc;
 
         TextView balance = view.findViewById(R.id.txt_balance);
-        Number AID = DBc.getAdminName(Account.currentAccount.gameName);
-        if (Account.currentAccount.AccountID.equals(AID))
+        Number adminID = DBc.getAdminName(Account.currentAccount.gameName);
+        if (Account.currentAccount.accountID.equals(adminID))
             balance.setText(R.string.balance_for_admins);
         else
             balance.setText(String.format("%s %s", Account.currentAccount.balance, Account.currentAccount.currencySign));
@@ -66,7 +66,7 @@ public class AccountOverviewFragment extends Fragment {
     private void loadTransactions() {
         DBc.orderTransactions();
         transactions.clear();
-        transactions.addAll(Account.currentAccount.AccountHistory);
+        transactions.addAll(Account.currentAccount.accountHistory);
 
         Collections.sort(transactions, (transaction, t1) -> t1.timestamp.compareTo(transaction.timestamp));
     }

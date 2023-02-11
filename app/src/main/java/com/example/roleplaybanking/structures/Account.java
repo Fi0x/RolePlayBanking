@@ -9,17 +9,16 @@ public class Account {
     public String name = "Unknown Account";
     public double balance = 0;
     public String currencySign = "€";
-    public Number AccountID = -1;
-    public ArrayList<Transaction> AccountHistory = new ArrayList<>();
+    public Number accountID = -1;
+    public ArrayList<Transaction> accountHistory = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(String gameName, String name, double balance, Number AccountID) {
+    public Account(String gameName, String name, double balance, Number accountID) {
         this.gameName = gameName;
         this.name = name;
         this.balance = balance;
-        this.AccountID = AccountID;
+        this.accountID = accountID;
     }
 }
-

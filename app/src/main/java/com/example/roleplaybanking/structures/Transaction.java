@@ -5,19 +5,19 @@ import com.google.firebase.Timestamp;
 public class Transaction {
     public String sender;
     public String recipient;
-    public String Game;
+    public String game;
     public double amount;
     public Timestamp timestamp;
-    public String Notiz;
-    public Number TransactioID;
+    public String note;
+    public Number transactionID;
 
-    public Transaction(String sender, String recipient, double amount, Timestamp Time, String Notiz, Number TransactionID, String Game) {
+    public Transaction(String sender, String recipient, double amount, Timestamp time, String note, Number transactionID, String game) {
         this.sender = sender;
         this.recipient = recipient;
         this.amount = amount;
-        this.timestamp = Time;
-        this.Notiz = Notiz;
-        this.TransactioID = TransactionID;
-        this.Game = Game;
+        this.timestamp = time;
+        this.note = note;
+        this.transactionID = transactionID;
+        this.game = game;
     }
 }

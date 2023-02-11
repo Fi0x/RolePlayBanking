@@ -5,9 +5,9 @@ public class Game {
     public Number adminID;
     public double defaultBalance;
 
-    public Game(String Name, Number AID, double dbalance) {
-        this.name = Name;
-        this.adminID = AID;
-        this.defaultBalance = dbalance;
+    public Game(String name, Number adminID, double defaultBalance) {
+        this.name = name;
+        this.adminID = adminID;
+        this.defaultBalance = defaultBalance;
     }
 }

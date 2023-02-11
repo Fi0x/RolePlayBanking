@@ -80,14 +80,14 @@ public class CreateNewActivity extends AppCompatActivity {
         }
 
 
-        boolean Gameexist = false;
+        boolean gameExists = false;
         for (int i = 0; DBc.getGame(i) != null; i++) {
             if (DBc.getGame(i).name.contentEquals(gameName))
-                Gameexist = true;
+                gameExists = true;
         }
 
         if (cbIsNew.isChecked()) {
-            if (Gameexist) {
+            if (gameExists) {
                 Snackbar.make(view, getString(R.string.error_account_game_exists), Snackbar.LENGTH_LONG).show();
                 return;
             }
@@ -97,7 +97,7 @@ public class CreateNewActivity extends AppCompatActivity {
             }
 
         } else {
-            if (!(Gameexist)) {
+            if (!(gameExists)) {
                 Snackbar.make(view, gameName + getString(R.string.error_account_game_not_found), Snackbar.LENGTH_LONG).show();
                 return;
             }

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class AccountSelectionActivity extends AppCompatActivity {
     public static ArrayList<Account> accounts = new ArrayList<>();
     public static DatabaseCon DBc = new DatabaseCon();
-    public static boolean Alreadyconnected = false;
+    public static boolean alreadyConnected = false;
     private AccountsAdapter adapter;
 
     @Override
@@ -41,15 +41,15 @@ public class AccountSelectionActivity extends AppCompatActivity {
         super.onStart();
 
         accounts.clear();
-        if (!(Alreadyconnected)) {
+        if (!(alreadyConnected)) {
             DBc.connectUser(this, getSharedPreferences("LoginFile", Context.MODE_PRIVATE));
-            Alreadyconnected = true;
+            alreadyConnected = true;
         } else {
             DBc.accounts.clear();
             DBc.connectAccounts(this);
         }
 
-        accounts.addAll(DBc.getAllAccounts());
+        accounts.addAll(DBc.accounts);
         adapter.notifyDataSetChanged();
 
         final RecyclerView rvContacts = findViewById(R.id.rvTransactionHistory);
