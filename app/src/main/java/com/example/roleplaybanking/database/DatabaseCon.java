@@ -188,8 +188,7 @@ public class DatabaseCon {
     }
 
     public void addAccount(String gameName, String accountName, double balance, Number accountID) {
-        Account newAcc = new Account(gameName, accountName, balance, accountID);
-        accounts.add(newAcc);
+        accounts.add(new Account(gameName, accountName, balance, accountID));
     }
 
     public void connectTransactions(Number accountID, String gameName) {
@@ -234,8 +233,7 @@ public class DatabaseCon {
             }
         }
 
-        Transaction newTran = new Transaction(senders, recipientName, amount, time, note, historyID, gameName);
-        TRANSACTIONS.add(newTran);
+        TRANSACTIONS.add(new Transaction(senders, recipientName, amount, time, note, historyID, gameName));
     }
 
     public void connectRecipients(AccountSelectionActivity activity) {
